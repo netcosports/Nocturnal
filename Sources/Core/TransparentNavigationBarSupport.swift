@@ -37,7 +37,20 @@ public protocol TransparentNavigationBarSupport: class {
   func finalizeInteractiveTransition(_ isCanceled: Bool)
 }
 
-public extension TransparentNavigationBarSupport where Self: UINavigationController {
+public extension TransparentNavigationBarSupport where Self: UINavigationController & DisposableContainer {
+
+  func setupTransparentNavigationBar() {
+    self.rx.willShow.subscribe(onNext: { [weak self] viewControllerAndAnimated in
+      guard let navigationController = self else { return }
+      let item = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+      viewControllerAndAnimated.viewController.navigationItem.backBarButtonItem = item
+      if let coordinator = navigationController.topViewController?.transitionCoordinator {
+        coordinator.notifyWhenInteractionChanges { context in
+          (navigationController as? TransparentNavigationBarSupport)?.finalizeInteractiveTransition(context.isCancelled)
+        }
+      }
+    }).disposed(by: disposeBag)
+  }
 
   func interactiveChange(toController: NavigationBarTransparencyController?,
                          fromController: NavigationBarTransparencyController?) {
