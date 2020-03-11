@@ -72,27 +72,31 @@ public extension CollectionViewContainer where
     let autoScrollObservable = autoScrollSubject.asObservable().observeOn(MainScheduler.instance)
     autoScrollObservable.flatMap { [weak self, weak emptyViewLayout] target -> Observable<Void> in
       guard let self = self else { return .empty() }
-      let index: IndexPath
+      var index: IndexPath?
       switch target.target {
       case .cellId(let cellId):
-        guard let indexPathForItem = self.containerView.source.indexPath(for: cellId) else {
-          assertionFailure("Can not find cell with id '\(cellId)'")
-          return .empty()
-        }
-        index = indexPathForItem
+        index = self.containerView.source.indexPath(for: cellId)
       case .indexPath(let indexPath):
         index = indexPath
       }
       guard let emptyViewLayout = emptyViewLayout else { return .empty() }
       let sections = self.containerView.source.sections
-      if index.section < sections.count && index.item < sections[index.section].cells.count {
+      if let index = index, index.section < sections.count && index.item < sections[index.section].cells.count {
         self.containerView.scroll(to: target)
         return .empty()
       }
       return emptyViewLayout.readyObservable
         .filter { [weak self] _ in
+          return (self?.containerView.source.sections.count ?? 0) > 0
+        }
+        .filter { [weak self] _ in
           guard let self = self else { return false }
           let sections = self.containerView.source.sections
+          if index == nil, case .cellId(let cellId) = target.target {
+            index = self.containerView.source.indexPath(for: cellId)
+            assert(index != nil, "Can not find cell with id '\(cellId)'")
+          }
+          guard let index = index else { return false }
           return index.section < sections.count && index.item < sections[index.section].cells.count
         }
         .map { _ in () }
