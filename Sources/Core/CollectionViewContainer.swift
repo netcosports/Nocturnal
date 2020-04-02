@@ -131,6 +131,7 @@ public extension CollectionViewContainer where Self: UIViewController, Self: Dis
 
   func setupContainerView(with refreshControl: UIRefreshControl?) {
     view.addSubview(containerView)
+    containerView.source.hostViewController = self
     if let refreshControl = refreshControl {
       refreshControl.rx
         .controlEvent(.valueChanged)
