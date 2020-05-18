@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
 
     sub.dependency 'RxSwift', '~> 5'
     sub.dependency 'RxCocoa', '~> 5'
+    sub.dependency 'RxGesture'
 
     sub.dependency 'Astrolabe', '~> 5'
     sub.dependency 'Alidade', '~> 5'
