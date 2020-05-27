@@ -13,7 +13,8 @@ import RxGesture
 
 public protocol SliderSheetContainer: class {
   var sliderSheetHeight: CGFloat { get set }
-  func enableSliderSheet(for sliderSheetView: UIView, in range: ClosedRange<CGFloat>, anchor: Anchor)
+  func enableSliderSheet(for sliderSheetView: UIView, in range: ClosedRange<CGFloat>, anchor: Anchor,
+  initialHeight: CGFloat?)
 }
 
 public enum Anchor {
@@ -30,8 +31,10 @@ public extension SliderSheetContainer where Self: UIViewController & DisposableC
 
   func enableSliderSheet(for sliderSheetView: UIView,
                          in range: ClosedRange<CGFloat>,
-                         anchor: Anchor) {
-    sliderSheetHeight = range.upperBound
+                         anchor: Anchor,
+                         initialHeight: CGFloat? = nil) {
+
+    sliderSheetHeight = initialHeight ?? range.upperBound
 
     let began = sliderSheetView.rx.panGesture().when(.began)
       .map { [weak self] _ in self?.sliderSheetHeight ?? 0.0 }
