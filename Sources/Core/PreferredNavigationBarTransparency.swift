@@ -35,7 +35,11 @@ public extension PreferredNavigationBarTransparency where Self: UIViewController
 
     visibility.do(onNext: { [weak self] visible in
       if visible { self?.setNeedsStatusBarAppearanceUpdate() }
-    }).filter { $0 }.flatMapLatest { [weak self] _ -> Observable<CGFloat> in
+    }).filter { $0 }
+      // NOTE: we need to perform this action with asyncInstance
+      // to let parent add this controller as a child
+      .observeOn(MainScheduler.asyncInstance)
+      .flatMapLatest { [weak self] _ -> Observable<CGFloat> in
       // NOTE: navigationBar become available only in viewwillappear
       guard let navigationBar = self?.navigationController?.navigationBar as? TransparentNavigationBar else {
         return .empty()
@@ -45,10 +49,18 @@ public extension PreferredNavigationBarTransparency where Self: UIViewController
     }.bind(to: currentNavigationBarTransparency)
      .disposed(by: disposeBag)
 
-    self.rx.sentMessage(#selector(UIViewController.viewDidAppear(_:))).subscribe(onNext: { [weak self] _ in
+    let visible = self.rx
+      .sentMessage(#selector(UIViewController.viewDidAppear(_:)))
+      .map { _ in true }
+
+    let invisible = self.rx
+      .sentMessage(#selector(UIViewController.viewDidDisappear(_:)))
+      .map { _ in false }
+
+    Observable.merge(visible, invisible).subscribe(onNext: { [weak self] visible in
        // NOTE: generally if we are in UINavigationController, it will update isHostApplingTransparency value
        // but in some case (set rootViewController directly for example) we need to start apply transparency manually
-       self?.isHostApplingTransparency = true
+       self?.isHostApplingTransparency = visible
      }).disposed(by: disposeBag)
 
     navigationController?.rx.willShow.subscribe(onNext: { [weak self] viewControllerAndAnimated in
