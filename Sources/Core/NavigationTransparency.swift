@@ -76,8 +76,9 @@ public extension NavigationBarTransparency where Self: UIViewController & Scroll
 
   func connectNavBarVisibilityToScrollView(showNavbarWithEmptyContent: Bool = true) {
     visibility.filter { $0 }.take(1).flatMap { [weak self] _ -> Observable<CGFloat> in
-      guard let scrollView = self?.scrollView else { return .empty() }
-      return scrollView.rx.scrollProgressInContainer(showNavbarWithEmptyContent: showNavbarWithEmptyContent)
+      guard let scrollView = self?.scrollView, let hideFactor = self?.hideFactor else { return .empty() }
+			return scrollView.rx.scrollProgressInContainer(showNavbarWithEmptyContent: showNavbarWithEmptyContent,
+																										 hideFactor: hideFactor)
     }
     .filter({ [weak self] _ in self?.isHostApplingTransparency == true })
     .subscribe(onNext: { [weak self] transparency in

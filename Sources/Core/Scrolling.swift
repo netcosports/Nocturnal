@@ -12,7 +12,8 @@ import RxCocoa
 
 public extension Reactive where Base: UIScrollView {
 
-  func scrollProgressInContainer(showNavbarWithEmptyContent: Bool = true) -> Observable<CGFloat> {
+	func scrollProgressInContainer(showNavbarWithEmptyContent: Bool = true,
+																 hideFactor: CGFloat) -> Observable<CGFloat> {
     let offset = base.rx.contentOffset
       .map { $0.y }
     let contentSize = base.rx
@@ -23,7 +24,7 @@ public extension Reactive where Base: UIScrollView {
       .map { [weak base] offset, contentSize in
         guard let base = base, let contentSize = contentSize else { return 1.0 }
         if contentSize.height > base.height {
-          return min(offset / (0.4 * (base.height > 0.0 ? base.height : 1.0)), 1.0)
+          return min(offset / (hideFactor * (base.height > 0.0 ? base.height : 1.0)), 1.0)
         } else {
           return showNavbarWithEmptyContent ? 1.0 : 0.0
         }
@@ -34,6 +35,11 @@ public extension Reactive where Base: UIScrollView {
 public protocol Scrolling {
 
   var scrollView: UIScrollView { get }
+	var hideFactor: CGFloat { get }
+}
+
+public extension Scrolling {
+	var hideFactor: CGFloat { 0.4 }
 }
 
 public extension Scrolling where Self: CollectionViewContainer {
