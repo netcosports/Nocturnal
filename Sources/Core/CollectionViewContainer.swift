@@ -14,11 +14,10 @@ import RxCocoa
 public protocol CollectionViewContainer {
   associatedtype Source: ReusableSource where Source.Container == UICollectionView
 
-  var containerView: CollectionView<EventDrivenLoaderDecoratorSource<Source>> { get }
-  func setupContainerView(with refreshControl: UIRefreshControl?)
+  var containerView: CollectionView<Source> { get }
 }
 
-public extension SourceContainer where Self: CollectionViewContainer {
+public extension SourceContainer where Self: CollectionViewContainer, Source: EventDrivenLoaderSource {
 
   var source: EventDrivenLoaderSource {
     return containerView.source
@@ -69,8 +68,23 @@ public extension CollectionViewContainer where
     emptyViewLayout.register(loaderDecoration: LoaderView.self,
                              showLoaderView: loaderViewSubject)
 
+    subscribeToAutoscrollEvents()
+
+    containerView.collectionViewLayout = emptyViewLayout
+    switch emptyViewLayout.scrollDirection {
+    case .horizontal:
+      containerView.alwaysBounceHorizontal = true
+    default:
+      containerView.alwaysBounceVertical = true
+    }
+  }
+}
+
+public extension AutoscrollContainer where Self: DisposableContainer & CollectionViewContainer {
+
+  func subscribeToAutoscrollEvents() {
     let autoScrollObservable = autoScrollSubject.asObservable().observeOn(MainScheduler.instance)
-    autoScrollObservable.flatMap { [weak self, weak emptyViewLayout] target -> Observable<Void> in
+    autoScrollObservable.flatMap { [weak self] target -> Observable<Void> in
       guard let self = self else { return .empty() }
       var index: IndexPath?
       switch target.target {
@@ -79,7 +93,8 @@ public extension CollectionViewContainer where
       case .indexPath(let indexPath):
         index = indexPath
       }
-      guard let emptyViewLayout = emptyViewLayout else { return .empty() }
+      guard let emptyViewLayout = self.containerView.collectionViewLayout as? PreparedLayout else { return .empty()
+      }
       let sections = self.containerView.source.sections
       if let index = index, index.section < sections.count && index.item < sections[index.section].cells.count {
         self.containerView.scroll(to: target)
@@ -107,13 +122,6 @@ public extension CollectionViewContainer where
         })
     }.subscribe()
     .disposed(by: disposeBag)
-    containerView.collectionViewLayout = emptyViewLayout
-    switch emptyViewLayout.scrollDirection {
-    case .horizontal:
-      containerView.alwaysBounceHorizontal = true
-    default:
-      containerView.alwaysBounceVertical = true
-    }
   }
 }
 
