@@ -22,15 +22,18 @@ public struct AutoScrollTarget {
   public let position: TargetScrollPosition
   public let animated: Bool
   public let keepInsideSafeArea: Bool
+  public let offset: CGFloat
 
   public init(target: Target,
               position: TargetScrollPosition,
               animated: Bool,
-              keepInsideSafeArea: Bool = true) {
+              keepInsideSafeArea: Bool = true,
+              offset: CGFloat = 0.0) {
     self.target = target
     self.position = position
     self.animated = animated
     self.keepInsideSafeArea = keepInsideSafeArea
+    self.offset = offset
   }
 }
 
@@ -62,15 +65,15 @@ public extension CollectionView {
     if layout.scrollDirection == .vertical {
       switch position {
       case .center:
-        point = CGPoint(x: 0.0, y: attributes.frame.midY - 0.5 * (self.frame.height - attributes.frame.height))
+        point = CGPoint(x: 0.0, y: attributes.frame.midY - 0.5 * (self.frame.height - attributes.frame.height) - target.offset)
       case .end:
-        point = CGPoint(x: 0.0, y: attributes.frame.minY + self.frame.height - attributes.frame.height)
+        point = CGPoint(x: 0.0, y: attributes.frame.minY + self.frame.height - attributes.frame.height + target.offset)
       case .start:
         var y = attributes.frame.minY
         if #available(iOS 11.0, *), keepInsideSafeArea, let view = self.source.hostViewController?.view {
           y -= view.safeAreaInsets.top + layout.minimumLineSpacing
         }
-        point = CGPoint(x: 0.0, y: y)
+        point = CGPoint(x: 0.0, y: y - target.offset)
       }
       if point.y + self.frame.height > (layout.collectionViewContentSize.height + self.contentInset.bottom) {
         point = CGPoint(x: 0.0, y: layout.collectionViewContentSize.height - self.height - 1.0)
@@ -81,11 +84,11 @@ public extension CollectionView {
       switch position {
       case .center:
         // NOTE: looks weird, but the only way I can imagine to handle autoaligned layout
-        point = CGPoint(x: attributes.frame.minX - self.contentInset.left, y: 0.0)
+        point = CGPoint(x: attributes.frame.minX - self.contentInset.left - target.offset, y: 0.0)
       case .end:
-        point = CGPoint(x: attributes.frame.minX + self.frame.width - attributes.frame.width, y: 0.0)
+        point = CGPoint(x: attributes.frame.minX + self.frame.width - attributes.frame.width + target.offset, y: 0.0)
       case .start:
-        var x = attributes.frame.minX
+        var x = attributes.frame.minX - target.offset
         if #available(iOS 11.0, *), keepInsideSafeArea, let view = self.source.hostViewController?.view {
           x -= view.safeAreaInsets.left + layout.minimumInteritemSpacing
         }
