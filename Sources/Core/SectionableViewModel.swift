@@ -74,7 +74,7 @@ public extension SectionableViewModel {
 
 public extension DisposableBindable where Self: BindableView & Lifecycle {
 
-  func bind(sectionableViewModel: SectionsLoadable, with bindDisposeBag: DisposeBag) {
+  func bind(sectionableViewModel: SectionsLoadable, with bindDisposeBag: DisposeBag, stateClosure: ((Astrolabe.LoaderState) -> (Bool))? = nil) {
     sectionableViewModel.autoscrollObserver = autoScrollSubject.asObserver()
     sectionableViewModel.source = source
 
@@ -111,9 +111,13 @@ public extension DisposableBindable where Self: BindableView & Lifecycle {
     }.bind(to: errorSubject).disposed(by: bindDisposeBag)
 
     let loading = source.stateObservable.map { state -> Bool in
-      switch state {
-      case .loading: return true
-      default: return false
+      if let closure = stateClosure {
+        return closure(state)
+      } else {
+        switch state {
+        case .error, .empty: return true
+        default: return false
+        }
       }
     }
     loading.bind(to: loaderViewSubject).disposed(by: bindDisposeBag)
