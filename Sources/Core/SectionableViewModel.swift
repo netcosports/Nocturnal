@@ -95,13 +95,9 @@ public extension DisposableBindable where Self: BindableView & Lifecycle {
       .disposed(by: bindDisposeBag)
 
     source.stateObservable.map { state -> Bool in
-      if let closure = stateClosure {
-        return closure(state)
-      } else {
-        switch state {
-        case .error, .empty: return true
-        default: return false
-        }
+      switch state {
+      case .error, .empty: return true
+      default: return false
       }
     }.bind(to: emptyViewSubject).disposed(by: bindDisposeBag)
 
@@ -115,9 +111,13 @@ public extension DisposableBindable where Self: BindableView & Lifecycle {
     }.bind(to: errorSubject).disposed(by: bindDisposeBag)
 
     let loading = source.stateObservable.map { state -> Bool in
-      switch state {
-      case .loading: return true
-      default: return false
+      if let closure = stateClosure {
+        return closure(state)
+      } else {
+        switch state {
+        case .error, .empty: return true
+        default: return false
+        }
       }
     }
     loading.bind(to: loaderViewSubject).disposed(by: bindDisposeBag)
