@@ -115,7 +115,7 @@ public extension DisposableBindable where Self: BindableView & Lifecycle {
         return closure(state)
       } else {
         switch state {
-        case .error, .empty: return true
+        case .loading: return true
         default: return false
         }
       }
