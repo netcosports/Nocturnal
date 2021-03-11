@@ -21,7 +21,20 @@ Pod::Spec.new do |s|
     sub.dependency 'RxGesture'
 
     sub.dependency 'Astrolabe', '~> 5'
-    sub.dependency 'Alidade', '~> 5'
+
+    sub.dependency 'Alidade', '~>5'
+    sub.dependency 'Alidade/Core', '~>5'
+    sub.dependency 'Alidade/UI', '~>5'
+    sub.dependency 'Alidade/Associatable', '~>5'
+    sub.dependency 'Alidade/Flowable', '~>5'
+    sub.dependency 'Alidade/FormatterPool', '~>5'
+    sub.dependency 'Alidade/String', '~>5'
+
     sub.dependency 'Sundial', '~> 5'
+  end
+
+  s.subspec 'NavigationBar' do |sub|
+    sub.source_files = 'Sources/NavigationBar/*.swift'
+    sub.dependency 'Nocturnal/Core'
   end
 end

@@ -11,12 +11,21 @@ import RxCocoa
 public protocol PreferredNavigationBarTransparency: class {
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport { get }
+
+  var transparentNavigationBar: TransparentNavigationBar? { get }
 }
 
 public extension PreferredNavigationBarTransparency {
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport {
-    return .disabled
+    .disabled
+  }
+}
+
+public extension PreferredNavigationBarTransparency where Self: UIViewController {
+
+  var transparentNavigationBar: TransparentNavigationBar? {
+    self.navigationController?.navigationBar as? TransparentNavigationBar
   }
 }
 
@@ -41,11 +50,11 @@ public extension PreferredNavigationBarTransparency where Self: UIViewController
       .observeOn(MainScheduler.asyncInstance)
       .flatMapLatest { [weak self] _ -> Observable<CGFloat> in
       // NOTE: navigationBar become available only in viewwillappear
-      guard let navigationBar = self?.navigationController?.navigationBar as? TransparentNavigationBar else {
+        guard let navigationBar = self?.transparentNavigationBar else {
         return .empty()
       }
       return navigationBar.transparencySubject.asObservable()
-              .filter({ [weak self] _ in self?.isHostApplingTransparency == true })
+        .filter({ [weak self] _ in self?.isHostApplingTransparency == true })
     }.bind(to: currentNavigationBarTransparency)
      .disposed(by: disposeBag)
 

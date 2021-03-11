@@ -16,11 +16,6 @@ public extension UINavigationController {
     }
     return topViewController
   }
-
-  typealias NavigationBarWithTransparency = UINavigationBar & TransparentNavigationBar
-  var customNavigationBar: NavigationBarWithTransparency? {
-    return navigationBar as? NavigationBarWithTransparency
-  }
 }
 
 public protocol TransparentNavigationBarSupport: class {
@@ -28,6 +23,8 @@ public protocol TransparentNavigationBarSupport: class {
   typealias NavigationBarTransparencyController = NavigationBarTransparency & UIViewController
 
   var isGesturePopShouldBegin: Bool { get set }
+
+  var customNavigationBar: TransparentNavigationBar? { get }
 
   var fromViewController: NavigationBarTransparencyController? { get set }
   var toViewController: NavigationBarTransparencyController? { get set }
@@ -38,6 +35,10 @@ public protocol TransparentNavigationBarSupport: class {
 }
 
 public extension TransparentNavigationBarSupport where Self: UINavigationController & DisposableContainer {
+
+  var customNavigationBar: TransparentNavigationBar? {
+   return navigationBar as? TransparentNavigationBar
+ }
 
   func setupTransparentNavigationBar() {
     self.rx.willShow.subscribe(onNext: { [weak self] viewControllerAndAnimated in
@@ -54,6 +55,8 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
 
   func interactiveChange(toController: NavigationBarTransparencyController?,
                          fromController: NavigationBarTransparencyController?) {
+    customNavigationBar?.startTransition(from: fromController, to: toController)
+
     toViewController = toController
     fromViewController = fromController
     fromViewController?.isHostApplingTransparency = false
@@ -61,11 +64,22 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
     if let toVC = toViewController,
       let value = try? toVC.currentNavigationBarTransparency.value(),
       !isGesturePopShouldBegin {
-      UIView.animate(withDuration: 0.25, animations: {
-        self.customNavigationBar?.transparencySubject.onNext(value)
-      }, completion: { _ in
-        toVC.isHostApplingTransparency = true
-      })
+      let update = {
+        UIView.animate(withDuration: 0.25, animations: {
+          self.customNavigationBar?.updateTransition(with: 1.0)
+          self.customNavigationBar?.transparencySubject.onNext(value)
+        }, completion: { _ in
+          self.customNavigationBar?.finishTransition()
+          toVC.isHostApplingTransparency = true
+        })
+      }
+      if viewControllers.isEmpty {
+        UIView.performWithoutAnimation {
+          update()
+        }
+      } else {
+        update()
+      }
     }
   }
 
@@ -106,15 +120,21 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
   }
 
   func startInteractiveTransition() {
+    customNavigationBar?.startTransition(from: fromViewController, to: toViewController)
+
     fromViewController?.isHostApplingTransparency = false
     toViewController?.isHostApplingTransparency = false
   }
 
   func updateInteractiveTransition(_ progress: CGFloat) {
+    customNavigationBar?.updateTransition(with: progress)
+
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)
   }
 
   func finalizeInteractiveTransition(_ isCanceled: Bool) {
+    customNavigationBar?.finishTransition()
+
     let progress: CGFloat = isCanceled ? 0.0 : 1.0
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)
     fromViewController?.isHostApplingTransparency = isCanceled

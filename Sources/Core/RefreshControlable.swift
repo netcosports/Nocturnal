@@ -5,6 +5,8 @@
 //  Created by Sergei Mikhan on 2/16/20.
 //
 
+import Alidade
+
 public protocol RefreshControlable {
 
   var refreshControl: UIRefreshControl? { get set }

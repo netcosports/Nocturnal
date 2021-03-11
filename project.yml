@@ -1,0 +1,63 @@
+name: Demo
+attributes:
+  ORGANIZATIONNAME: NetcoSports
+options:
+  minimumXcodeGenVersion: 2.1.0
+  xcodeVersion: "~> 12.3"
+  indentWidth: 2
+  tabWidth: 2
+  developmentLanguage: en
+configs:
+  Debug: debug
+  InHouse: release
+  Production: release
+targets:
+  Demo:
+    type: application
+    platform: iOS
+    deploymentTarget: '12.0'
+    sources:
+    - path: Demo
+      excludes:
+      - Modules
+      - Playgrounds
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY:
+        - 1
+        DEVELOPMENT_TEAM: JPS45PPV79
+        PRODUCT_BUNDLE_IDENTIFIER: com.demo.nocturnal
+        SWIFT_VERSION: '5.3'
+        ALWAYS_SEARCH_USER_PATHS: 'NO'
+        CODE_SIGN_STYLE: Automatic
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: "$(inherited)"
+        ENABLE_BITCODE: 'NO'
+        CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: 'YES'
+    info:
+      path: Demo/Resources/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: en
+        CFBundleDisplayName: Demo
+        ITSAppUsesNonExemptEncryption: false
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        LSRequiresIPhoneOS: true
+        UIRequiredDeviceCapabilities:
+        - armv7
+        UILaunchStoryboardName: LaunchScreen
+        UIStatusBarHidden: true
+        UISupportedInterfaceOrientations:
+        - UIInterfaceOrientationPortrait
+        - UIInterfaceOrientationLandscapeLeft
+        - UIInterfaceOrientationLandscapeRight
+        UIBackgroundModes:
+        - remote-notification
+        CFBundleURLTypes:
+        - CFBundleTypeRole: Editor
+          CFBundleURLSchemes:
+          - com.googleusercontent.apps.193847290636-rhb628pn2rd41rhnjv5pevhgvn6lrkor
+        - CFBundleTypeRole: Editor
+          CFBundleURLSchemes:
+          - fb273362804308899
+        UIUserInterfaceStyle: Light
+        FirebaseAutomaticScreenReportingEnabled: false

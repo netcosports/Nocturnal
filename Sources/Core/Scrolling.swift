@@ -23,8 +23,9 @@ public extension Reactive where Base: UIScrollView {
     return Observable.combineLatest(offset, contentSize)
       .map { [weak base] offset, contentSize in
         guard let base = base, let contentSize = contentSize else { return 1.0 }
+        let inset = base.adjustedContentInset.top
         if contentSize.height > base.height {
-          return min(offset / (hideFactor * (base.height > 0.0 ? base.height : 1.0)), 1.0)
+          return min((offset + inset) / (hideFactor * (base.height > 0.0 ? base.height : 1.0)), 1.0)
         } else {
           return showNavbarWithEmptyContent ? 1.0 : 0.0
         }

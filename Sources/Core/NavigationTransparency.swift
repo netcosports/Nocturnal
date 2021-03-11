@@ -15,6 +15,25 @@ public enum NavigationBarTransparencySupport {
 public protocol TransparentNavigationBar {
 
   var transparencySubject: PublishSubject<CGFloat> { get }
+
+  func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?)
+  func updateTransition(with progress: CGFloat)
+  func finishTransition()
+}
+
+extension TransparentNavigationBar {
+
+  func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?) {
+
+  }
+
+  func updateTransition(with progress: CGFloat) {
+
+  }
+
+  func finishTransition() {
+
+  }
 }
 
 public extension TransparentNavigationBar {
@@ -82,10 +101,10 @@ public extension NavigationBarTransparency where Self: UIViewController & Scroll
     }
     .filter({ [weak self] _ in self?.isHostApplingTransparency == true })
     .subscribe(onNext: { [weak self] transparency in
-      guard let navigationBar = self?.navigationController?.navigationBar as? TransparentNavigationBar else {
+      guard let navigationBar = (self?.navigationController as? TransparentNavigationBarSupport)?.customNavigationBar else {
         return
       }
-      navigationBar.transparencySubject.onNext(transparency)
+      navigationBar.transparencySubject.onNext(1.0 - transparency)
     }).disposed(by: disposeBag)
   }
 }
