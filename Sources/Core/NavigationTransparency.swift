@@ -22,7 +22,7 @@ public protocol TransparentNavigationBar {
   func finishTransition()
 }
 
-extension TransparentNavigationBar {
+public extension TransparentNavigationBar {
 
   func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?) {
 
