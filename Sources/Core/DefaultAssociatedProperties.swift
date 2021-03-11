@@ -5,9 +5,9 @@
 //  Created by Sergei Mikhan on 2/14/20.
 //
 
+import Foundation
 import Astrolabe
 import Sundial
-
 import RxSwift
 import RxCocoa
 

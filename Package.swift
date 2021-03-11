@@ -24,6 +24,7 @@ let package = Package(
 														 "RxGesture",
 														 "Sundial",
 														 "Astrolabe",
+														 .product(name: "AlidadeAssociatable", package: "Alidade"),
 														 .product(name: "AlidadeUI", package: "Alidade")],
 							path: "./Sources/Core"),
     ],
