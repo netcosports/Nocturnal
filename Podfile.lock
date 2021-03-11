@@ -1,0 +1,88 @@
+PODS:
+  - Alidade (5.1.8):
+    - Alidade/Default (= 5.1.8)
+  - Alidade/Associatable (5.1.8):
+    - Alidade/Boxed
+  - Alidade/Boxed (5.1.8)
+  - Alidade/Core (5.1.8)
+  - Alidade/Default (5.1.8):
+    - Alidade/Core
+    - Alidade/FormatterPool
+    - Alidade/UIExtension
+  - Alidade/Flowable (5.1.8)
+  - Alidade/FormatterPool (5.1.8)
+  - Alidade/String (5.1.8):
+    - Alidade/Core
+  - Alidade/UI (5.1.8):
+    - Alidade/Core
+  - Alidade/UIExtension (5.1.8):
+    - Alidade/Core
+  - Astrolabe (5.1.9):
+    - Astrolabe/Core (= 5.1.9)
+  - Astrolabe/Core (5.1.9):
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
+  - Nocturnal (0.1.0):
+    - Nocturnal/Core (= 0.1.0)
+  - Nocturnal/Core (0.1.0):
+    - Alidade (~> 5)
+    - Alidade/Associatable (~> 5)
+    - Alidade/Core (~> 5)
+    - Alidade/Flowable (~> 5)
+    - Alidade/FormatterPool (~> 5)
+    - Alidade/String (~> 5)
+    - Alidade/UI (~> 5)
+    - Astrolabe (~> 5)
+    - RxCocoa (~> 5)
+    - RxGesture
+    - RxSwift (~> 5)
+    - Sundial (~> 5)
+  - Nocturnal/NavigationBar (0.1.0):
+    - Nocturnal/Core
+  - PinLayout (1.9.3)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxGesture (3.0.2):
+    - RxCocoa (~> 5.1)
+    - RxSwift (~> 5.1)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.2)
+  - Sundial (5.1.22):
+    - Astrolabe/Core
+
+DEPENDENCIES:
+  - Nocturnal (from `.`)
+  - Nocturnal/NavigationBar (from `.`)
+  - PinLayout
+
+SPEC REPOS:
+  trunk:
+    - Alidade
+    - Astrolabe
+    - PinLayout
+    - RxCocoa
+    - RxGesture
+    - RxRelay
+    - RxSwift
+    - Sundial
+
+EXTERNAL SOURCES:
+  Nocturnal:
+    :path: "."
+
+SPEC CHECKSUMS:
+  Alidade: ca003a9524ffcc47abdb8ecc2ecd92734d48767b
+  Astrolabe: 97d5636ab06045bdfde8b420197b9aa85d5dff43
+  Nocturnal: abca7492e64df8c5e4047f47b41ffab6be523794
+  PinLayout: 4d8733121f8687edcc8f00c19bf1379d12808767
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxGesture: d6bd7447ca3a596c7a9702a6a2b6a2bb5d8bae54
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
+  Sundial: 2b60ec229eab90fde2e8401028e4f8bbf4ef16ad
+
+PODFILE CHECKSUM: e2053e6eb8b7e498ab765f62df1cd0ebd4107677
+
+COCOAPODS: 1.10.1
