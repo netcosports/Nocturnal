@@ -5,7 +5,7 @@
 //  Created by Sergei Mikhan on 2/16/20.
 //
 
-import Alidade
+import UIKit
 
 public protocol RefreshControlable {
 

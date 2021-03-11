@@ -5,7 +5,11 @@
 //  Created by Sergei Mikhan on 2/10/20.
 //
 
-import Alidade
+#if SWIFT_PACKAGE
+	import AlidadeUI
+#else
+	import Alidade
+#endif
 
 import RxSwift
 import RxCocoa
