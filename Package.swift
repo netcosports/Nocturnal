@@ -19,7 +19,12 @@ let package = Package(
 		],
     targets: [
 			.target(name: "NocturnalCore",
-							dependencies: ["RxSwift", "RxCocoa", "RxGesture", "Sundial", "Astrolabe", "AlidadeUI"],
+							dependencies: ["RxSwift",
+														 .product(name: "RxCocoa", package: "RxSwift"),
+														 "RxGesture",
+														 "Sundial",
+														 "Astrolabe",
+														 "AlidadeUI"],
 							path: "./Sources/Core"),
     ],
     swiftLanguageVersions: [.v5]
