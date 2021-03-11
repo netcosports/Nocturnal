@@ -15,7 +15,7 @@ let package = Package(
 			.package(name: "RxGesture", url: "https://github.com/RxSwiftCommunity/RxGesture.git", .upToNextMajor(from: "3.0.0")),
 			.package(name: "Sundial", url: "https://github.com/netcosports/Sundial.git", .upToNextMajor(from: "5.0.0")),
 			.package(name: "Astrolabe", url: "https://github.com/netcosports/Astrolabe.git", .upToNextMajor(from: "5.0.0")),
-			.package(name: "AlidadeUI", url: "https://github.com/netcosports/Alidade.git", .branch("master"))
+			.package(name: "Alidade", url: "https://github.com/netcosports/Alidade.git", .branch("master"))
 		],
     targets: [
 			.target(name: "NocturnalCore",
@@ -24,7 +24,7 @@ let package = Package(
 														 "RxGesture",
 														 "Sundial",
 														 "Astrolabe",
-														 "AlidadeUI"],
+														 .product(name: "AlidadeUI", package: "Alidade")],
 							path: "./Sources/Core"),
     ],
     swiftLanguageVersions: [.v5]
