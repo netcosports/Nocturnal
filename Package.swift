@@ -11,8 +11,7 @@ let package = Package(
 			.library(name: "NocturnalCore", targets: ["NocturnalCore"]),
     ],
 		dependencies: [
-			.package(name: "RxSwift", url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.0.0")),
-			.package(name: "RxCocoa", url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.0.0")),
+			.package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.0.0")),
 			.package(name: "RxGesture", url: "https://github.com/RxSwiftCommunity/RxGesture.git", .upToNextMajor(from: "4.0.0")),
 			.package(name: "Sundial", url: "https://github.com/netcosports/Sundial.git", .upToNextMajor(from: "5.0.0")),
 			.package(name: "Astrolabe", url: "https://github.com/netcosports/Astrolabe.git", .upToNextMajor(from: "5.0.0")),
