@@ -121,7 +121,7 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
   }
 
   func startInteractiveTransition() {
-    customNavigationBar?.startTransition(from: fromViewController, to: toViewController)
+    //customNavigationBar?.startTransition(from: fromViewController, to: toViewController)
 
     fromViewController?.isHostApplingTransparency = false
     toViewController?.isHostApplingTransparency = false

@@ -9,6 +9,8 @@ import RxSwift
 
 public protocol CustomNavigationable: class {
 
+  var isInTransition: Bool { get set }
+
   var inset: UIEdgeInsets { get }
 
   var fromBackgroundView: UIView { get }
@@ -39,15 +41,25 @@ extension CustomNavigationable where Self: UIView {
     from fromHost: NavigationBarHostable?,
     to toHost: NavigationBarHostable?
   ) {
+    if isInTransition {
+      return
+    }
+
+    isUserInteractionEnabled = false
+    isInTransition = true
+    subviews.forEach { $0.removeFromSuperview() }
+
     self.fromHost = fromHost
     self.toHost = toHost
 
-    toBackgroundView.superview?.bringSubviewToFront(toBackgroundView)
-    fromBackgroundView.superview?.bringSubviewToFront(fromBackgroundView)
+    fromBackgroundView.superview?.sendSubviewToBack(fromBackgroundView)
+    toBackgroundView.superview?.sendSubviewToBack(toBackgroundView)
+
     fromContainer.superview?.bringSubviewToFront(fromContainer)
     toContainer.superview?.bringSubviewToFront(toContainer)
 
     fromBackgroundView.alpha = self.fromAlpha
+    toBackgroundView.alpha = 0.0
     fromContainer.alpha = 1.0
     toContainer.alpha = 0.0
 
@@ -62,8 +74,12 @@ extension CustomNavigationable where Self: UIView {
   }
 
   public func finishTransition() {
+    isInTransition = false
+    isUserInteractionEnabled = true
+
     fromContainer.subviews.forEach { $0.removeFromSuperview() }
 
+    fromBackgroundView.alpha = 0.0
     fromContainer.alpha = 0.0
     toBackgroundView.alpha = self.toAlpha
     toContainer.alpha = 1.0
@@ -110,14 +126,10 @@ extension CustomNavigationable where Self: UIView {
   public func integrate(host: NavigationBarHostable?, into view: UIView, backgroundView: UIView) {
     guard let host = host else { return }
     view.subviews.forEach { $0.removeFromSuperview() }
-    if backgroundView.superview == nil {
-      addSubview(backgroundView)
-    }
-    backgroundView.backgroundColor = host.backgroundColor
+    addSubview(backgroundView)
+    addSubview(view)
 
-    if view.superview == nil {
-      self.addSubview(view)
-    }
+    backgroundView.backgroundColor = host.backgroundColor
     host.leadingViews.forEach {
       view.addSubview($0.view)
     }

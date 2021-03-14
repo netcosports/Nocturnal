@@ -12,7 +12,7 @@ public protocol BarItemViewable {
   var width: CGFloat { get }
 }
 
-public protocol NavigationBarHostable {
+public protocol NavigationBarHostable: class {
   var backgroundColor: UIColor? { get }
 
   var titleView: BarItemViewable? { get }

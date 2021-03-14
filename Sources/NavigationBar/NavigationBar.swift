@@ -8,6 +8,7 @@
 import RxSwift
 
 public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
+  public var isInTransition = false
 
   private let disposeBag = DisposeBag()
 
@@ -54,12 +55,12 @@ public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationB
     layout(host: toHost, into: toContainer)
   }
 
-  public var fromHost: NavigationBarHostable? {
+  public weak var fromHost: NavigationBarHostable? {
     didSet {
       self.integrate(host: fromHost, into: fromContainer, backgroundView: fromBackgroundView)
     }
   }
-  public var toHost: NavigationBarHostable? {
+  public weak var toHost: NavigationBarHostable? {
     didSet {
       self.integrate(host: toHost, into: toContainer, backgroundView: toBackgroundView)
     }

@@ -29,6 +29,10 @@ class DetailsViewController: ViewController, NavigationBarTransparencyHost, Life
     .disabled
   }
 
+  override var trailingViews: [BarItemViewable] {
+    return []
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
