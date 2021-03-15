@@ -111,11 +111,11 @@ extension CustomNavigationable where Self: UIView {
   }
 
   public func layout(host: NavigationBarHostable?, into view: UIView) {
-    guard let host = host else { return }
+    guard let host = host, let item = host.customNavigationItem else { return }
 
     view.frame = self.bounds
-    let leading = host.leadingViews
-    let trailing = host.trailingViews
+    let leading = item.leadingViews
+    let trailing = item.trailingViews
 
     let width = self.width - inset.left - inset.right
     let height = self.height - inset.top - inset.bottom
@@ -135,7 +135,7 @@ extension CustomNavigationable where Self: UIView {
       trailingX -= $0.width
     }
 
-    guard let title = host.titleView else {
+    guard let title = item.titleView else {
       return
     }
     let availableSpace = trailingX - leadingX
@@ -149,19 +149,19 @@ extension CustomNavigationable where Self: UIView {
   }
 
   public func integrate(host: NavigationBarHostable?, into view: UIView, backgroundView: UIView) {
-    guard let host = host else { return }
+    guard let host = host, let item = host.customNavigationItem else { return }
     view.subviews.forEach { $0.removeFromSuperview() }
     addSubview(backgroundView)
     addSubview(view)
 
-    backgroundView.backgroundColor = host.backgroundColor
-    host.leadingViews.forEach {
+    backgroundView.backgroundColor = item.backgroundColor
+    item.leadingViews.forEach {
       view.addSubview($0.view)
     }
-    host.trailingViews.forEach {
+    item.trailingViews.forEach {
       view.addSubview($0.view)
     }
-    guard let title = host.titleView else {
+    guard let title = item.titleView else {
       return
     }
     view.addSubview(title.view)

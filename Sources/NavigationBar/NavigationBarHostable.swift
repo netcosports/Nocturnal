@@ -12,12 +12,34 @@ public protocol BarItemViewable {
   var width: CGFloat { get }
 }
 
-public protocol NavigationBarHostable: class {
+public protocol NavigationItemable {
   var backgroundColor: UIColor? { get }
-
   var titleView: BarItemViewable? { get }
   var leadingViews: [BarItemViewable] { get }
   var trailingViews: [BarItemViewable] { get }
+}
+
+public struct NavigationItem: NavigationItemable {
+  public let backgroundColor: UIColor?
+  public let titleView: BarItemViewable?
+  public let leadingViews: [BarItemViewable]
+  public let trailingViews: [BarItemViewable]
+
+  public init(
+    backgroundColor: UIColor?,
+    titleView: BarItemViewable?,
+    leadingViews: [BarItemViewable],
+    trailingViews: [BarItemViewable]
+  ) {
+    self.backgroundColor = backgroundColor
+    self.titleView = titleView
+    self.leadingViews = leadingViews
+    self.trailingViews = trailingViews
+  }
+}
+
+public protocol NavigationBarHostable: class {
+  var customNavigationItem: NavigationItemable? { get }
 }
 
 public struct BarItemView: BarItemViewable {

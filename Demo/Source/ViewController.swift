@@ -61,6 +61,21 @@ open class ViewController: BaseViewController, NavigationBarHostable {
     return test
   }()
 
+  open override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    currentNavigationItem = NavigationItem(
+      backgroundColor: backgroundColor,
+      titleView: titleView,
+      leadingViews: leadingViews,
+      trailingViews: trailingViews
+    )
+  }
+
+  private var currentNavigationItem: NavigationItemable?
+  open var customNavigationItem: NavigationItemable? {
+    currentNavigationItem
+  }
+
   open var backgroundColor: UIColor? {
     .red
   }
