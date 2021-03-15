@@ -21,12 +21,24 @@ open class ViewController: BaseViewController, NavigationBarHostable {
     back.rx.tap.subscribe(onNext: { [weak self] in
       self?.navigationController?.popViewController(animated: true)
     }).disposed(by: disposeBag)
+
+    menu.rx.tap.subscribe(onNext: { [weak self] in
+      self?.navigationController?.popViewController(animated: true)
+    }).disposed(by: disposeBag)
   }
 
   let back: UIButton = {
     let back = UIButton()
     back.setTitleColor(.black, for: .normal)
     back.setTitle("BACK", for: .normal)
+    back.backgroundColor = .orange
+    return back
+  }()
+
+  let menu: UIButton = {
+    let back = UIButton()
+    back.setTitleColor(.black, for: .normal)
+    back.setTitle("MENU", for: .normal)
     back.backgroundColor = .orange
     return back
   }()
@@ -58,9 +70,15 @@ open class ViewController: BaseViewController, NavigationBarHostable {
   }
 
   open var leadingViews: [BarItemViewable] {
-    return [
-      BarItemView(view: back, width: 120)
-    ]
+    if (self.navigationController?.viewControllers.count ?? 0) > 1 {
+      return [
+        BarItemView(view: back, width: 120)
+      ]
+    } else {
+      return [
+        BarItemView(view: menu, width: 120)
+      ]
+    }
   }
 
   open var trailingViews: [BarItemViewable] {

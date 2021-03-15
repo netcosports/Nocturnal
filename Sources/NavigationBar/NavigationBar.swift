@@ -8,6 +8,7 @@
 import RxSwift
 
 public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
+
   public var isInTransition = false
 
   private let disposeBag = DisposeBag()

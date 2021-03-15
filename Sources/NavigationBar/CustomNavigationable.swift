@@ -24,7 +24,7 @@ public protocol CustomNavigationable: class {
 
   func startTransition(from fromHost: NavigationBarHostable?, to toHost: NavigationBarHostable?)
   func updateTransition(with progress: CGFloat)
-  func finishTransition()
+  func finishTransition(isCanceled: Bool)
 }
 
 extension CustomNavigationable where Self: UIView {
@@ -73,16 +73,41 @@ extension CustomNavigationable where Self: UIView {
     toContainer.alpha = progress
   }
 
-  public func finishTransition() {
+  public func finishTransition(isCanceled: Bool) {
     isInTransition = false
     isUserInteractionEnabled = true
 
-    fromContainer.subviews.forEach { $0.removeFromSuperview() }
+    let targetContainer: UIView
+    let targetBackground: UIView
+    let targetAlpha: CGFloat
 
-    fromBackgroundView.alpha = 0.0
-    fromContainer.alpha = 0.0
-    toBackgroundView.alpha = self.toAlpha
-    toContainer.alpha = 1.0
+    let otherContainer: UIView
+    let otherBackground: UIView
+    let otherAlpha: CGFloat = 0.0
+
+    if isCanceled {
+      targetContainer = fromContainer
+      targetBackground = fromBackgroundView
+      targetAlpha = self.fromAlpha
+
+      otherContainer = toContainer
+      otherBackground = toBackgroundView
+    } else {
+      targetContainer = toContainer
+      targetBackground = toBackgroundView
+      targetAlpha = self.toAlpha
+
+      otherContainer = fromContainer
+      otherBackground = fromBackgroundView
+    }
+
+    otherContainer.subviews.forEach { $0.removeFromSuperview() }
+
+    otherBackground.alpha = otherAlpha
+    otherContainer.alpha = otherAlpha
+
+    targetBackground.alpha = targetAlpha
+    targetContainer.alpha = 1.0
   }
 
   public func layout(host: NavigationBarHostable?, into view: UIView) {

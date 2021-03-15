@@ -70,7 +70,7 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
           self.customNavigationBar?.updateTransition(with: 1.0)
           self.customNavigationBar?.transparencySubject.onNext(value)
         }, completion: { _ in
-          self.customNavigationBar?.finishTransition()
+          self.customNavigationBar?.finishTransition(isCanceled: false)
           toVC.isHostApplingTransparency = true
         })
       }
@@ -134,7 +134,7 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
   }
 
   func finalizeInteractiveTransition(_ isCanceled: Bool) {
-    customNavigationBar?.finishTransition()
+    customNavigationBar?.finishTransition(isCanceled: isCanceled)
 
     let progress: CGFloat = isCanceled ? 0.0 : 1.0
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)

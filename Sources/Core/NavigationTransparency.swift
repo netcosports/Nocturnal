@@ -19,7 +19,7 @@ public protocol TransparentNavigationBar {
 
   func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?)
   func updateTransition(with progress: CGFloat)
-  func finishTransition()
+  func finishTransition(isCanceled: Bool)
 }
 
 public extension TransparentNavigationBar {
@@ -32,7 +32,7 @@ public extension TransparentNavigationBar {
 
   }
 
-  func finishTransition() {
+  func finishTransition(isCanceled: Bool) {
 
   }
 }
