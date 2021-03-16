@@ -105,7 +105,7 @@ public extension NavigationBarTransparency where Self: UIViewController & Scroll
       guard let navigationBar = (self?.navigationController as? TransparentNavigationBarSupport)?.customNavigationBar else {
         return
       }
-      navigationBar.transparencySubject.onNext(1.0 - transparency)
+      navigationBar.transparencySubject.onNext(transparency)
     }).disposed(by: disposeBag)
   }
 }

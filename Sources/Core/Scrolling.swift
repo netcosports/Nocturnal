@@ -32,7 +32,7 @@ public extension Reactive where Base: UIScrollView {
 					inset = base.adjustedContentInset.top
 				}
         if contentSize.height > base.height {
-          return min((offset + inset) / (hideFactor * (base.height > 0.0 ? base.height : 1.0)), 1.0)
+          return max(0.0, min((offset + inset) / (hideFactor * (base.height > 0.0 ? base.height : 1.0)), 1.0))
         } else {
           return showNavbarWithEmptyContent ? 1.0 : 0.0
         }

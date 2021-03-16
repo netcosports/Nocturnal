@@ -26,7 +26,7 @@ class DetailsViewController: ViewController, NavigationBarTransparencyHost, Life
   }
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport {
-    .disabled
+    .enabled
   }
 
   override var trailingViews: [BarItemViewable] {

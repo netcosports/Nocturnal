@@ -16,7 +16,7 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
   public let fromBackgroundView = UIView()
   public let toBackgroundView = UIView()
 
-  public var visibleWhenInTop = false
+  public var visibleWhenInTop = true
 
   init() {
     super.init(frame: .zero)
