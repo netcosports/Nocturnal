@@ -7,7 +7,7 @@
 
 import RxSwift
 
-public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
+open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
 
   public var isInTransition = false
 
@@ -16,14 +16,16 @@ public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationB
   public let fromBackgroundView = UIView()
   public let toBackgroundView = UIView()
 
+  public var visibleWhenInTop = false
+
   init() {
     super.init(frame: .zero)
     transparencySubject.subscribe(onNext: { [weak self] progress in
-      self?.toBackgroundView.alpha = progress
+      self?.toBackgroundView.alpha = self?.visibleWhenInTop == true ? progress : 1.0 - progress
     }).disposed(by: disposeBag)
   }
 
-  required init?(coder: NSCoder) {
+  required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -39,14 +41,14 @@ public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationB
 
   public var transparencySubject = PublishSubject<CGFloat>()
 
-  public var inset: UIEdgeInsets {
+  open var inset: UIEdgeInsets {
     .init(top: UIApplication.shared.statusBarFrame.height, left: 0.0, bottom: 0.0, right: 0.0)
   }
 
   public var fromContainer = UIView()
   public var toContainer = UIView()
 
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
 
     toBackgroundView.frame = self.bounds
