@@ -78,8 +78,6 @@ public extension DisposableBindable where Self: BindableView & Lifecycle {
     sectionableViewModel.autoscrollObserver = autoScrollSubject.asObserver()
     sectionableViewModel.source = source
 
-    source.settings.loadingBehavior = [.initial]
-    source.settings.autoupdatePeriod = 30.0
     source.intentObservable.flatMapLatest { intent in
       return sectionableViewModel.loadAndMergeSections(from: intent)
     }.bind(to: source.sectionsObserver).disposed(by: bindDisposeBag)
