@@ -20,6 +20,8 @@ public protocol TransparentNavigationBar {
   func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?)
   func updateTransition(with progress: CGFloat)
   func finishTransition(isCanceled: Bool)
+
+  var currentHeight: CGFloat { get }
 }
 
 public extension TransparentNavigationBar {

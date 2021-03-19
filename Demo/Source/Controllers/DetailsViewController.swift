@@ -29,6 +29,10 @@ class DetailsViewController: ViewController, NavigationBarTransparencyHost, Life
     .enabled
   }
 
+  override var navigationBarHeight: CGFloat {
+    return 120.0
+  }
+
   override var trailingViews: [BarItemViewable] {
     return []
   }

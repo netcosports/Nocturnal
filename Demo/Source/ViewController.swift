@@ -16,7 +16,7 @@ open class ViewController: BaseViewController, NavigationBarHostable {
 
   open override func viewDidLoad() {
     super.viewDidLoad()
-    additionalSafeAreaInsets = .init(top: Dimens.navigationBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
+    additionalSafeAreaInsets = .init(top: navigationBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
 
     back.rx.tap.subscribe(onNext: { [weak self] in
       self?.navigationController?.popViewController(animated: true)
@@ -64,6 +64,7 @@ open class ViewController: BaseViewController, NavigationBarHostable {
   open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     currentNavigationItem = NavigationItem(
+      height: navigationBarHeight,
       backgroundColor: backgroundColor,
       titleView: titleView,
       leadingViews: leadingViews,
@@ -74,6 +75,10 @@ open class ViewController: BaseViewController, NavigationBarHostable {
   private var currentNavigationItem: NavigationItemable?
   open var customNavigationItem: NavigationItemable? {
     currentNavigationItem
+  }
+
+  open var navigationBarHeight: CGFloat {
+    return 80.0
   }
 
   open var backgroundColor: UIColor? {

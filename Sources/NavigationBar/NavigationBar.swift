@@ -68,4 +68,18 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
       self.integrate(host: toHost, into: toContainer, backgroundView: toBackgroundView)
     }
   }
+
+  public var currentHeight: CGFloat {
+    guard let toHeight = self.toHost?.customNavigationItem?.height else {
+      return 0.0
+    }
+
+    guard let fromHeight = self.fromHost?.customNavigationItem?.height else {
+      return toHeight
+    }
+
+    // FIXME: need to find more proper way to get progres
+    let progress = toContainer.alpha
+    return fromHeight + (toHeight - fromHeight) * progress
+  }
 }

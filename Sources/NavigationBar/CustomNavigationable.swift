@@ -63,6 +63,7 @@ extension CustomNavigationable where Self: UIView {
     fromContainer.alpha = 1.0
     toContainer.alpha = 0.0
 
+    self.setNeedsLayout()
     self.layoutIfNeeded()
   }
 
@@ -118,7 +119,7 @@ extension CustomNavigationable where Self: UIView {
     let trailing = item.trailingViews
 
     let width = self.width - inset.left - inset.right
-    let height = self.height - inset.top - inset.bottom
+    let height = item.height
 
     var leadingX: CGFloat = inset.left
     var trailingX: CGFloat = width - inset.right

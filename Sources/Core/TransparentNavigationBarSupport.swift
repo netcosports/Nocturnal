@@ -60,6 +60,8 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
           UIView.animate(withDuration: 0.25, animations: {
             self.customNavigationBar?.updateTransition(with: 1.0)
             self.customNavigationBar?.transparencySubject.onNext(value)
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
           }, completion: { _ in
             self.customNavigationBar?.finishTransition(isCanceled: false)
             toVC.isHostApplingTransparency = true
@@ -123,8 +125,6 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
   }
 
   func startInteractiveTransition() {
-    //customNavigationBar?.startTransition(from: fromViewController, to: toViewController)
-
     fromViewController?.isHostApplingTransparency = false
     toViewController?.isHostApplingTransparency = false
   }
@@ -133,6 +133,9 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
     customNavigationBar?.updateTransition(with: progress)
 
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)
+
+    view.setNeedsLayout()
+    view.layoutIfNeeded()
   }
 
   func finalizeInteractiveTransition(_ isCanceled: Bool) {
