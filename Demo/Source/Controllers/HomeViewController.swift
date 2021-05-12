@@ -40,7 +40,7 @@ class TestCell: CollectionViewCell, Reusable {
   }
 }
 
-class HomeViewController: ViewController, NavigationBarTransparencyHost, Lifecycle, DisposableContainer, Scrolling {
+class HomeViewController: ViewController, NavigationBarTransparencyHost, DisposableContainer, Scrolling {
   let collectionView = CollectionView<CollectionViewSource>()
 
   var scrollView: UIScrollView {

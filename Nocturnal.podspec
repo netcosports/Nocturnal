@@ -16,8 +16,8 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |sub|
     sub.source_files = 'Sources/Core/*.swift'
 
-    sub.dependency 'RxSwift', '~> 5'
-    sub.dependency 'RxCocoa', '~> 5'
+    sub.dependency 'RxSwift', '~> 6'
+    sub.dependency 'RxCocoa', '~> 6'
     sub.dependency 'RxGesture'
 
     sub.dependency 'Astrolabe', '~> 5'
@@ -31,6 +31,11 @@ Pod::Spec.new do |s|
     sub.dependency 'Alidade/String', '~>5'
 
     sub.dependency 'Sundial', '~> 5'
+  end
+
+  s.subspec 'ContainerView' do |sub|
+    sub.source_files = 'Sources/ContainerView/*.swift'
+    sub.dependency 'Nocturnal/Core'
   end
 
   s.subspec 'NavigationBar' do |sub|

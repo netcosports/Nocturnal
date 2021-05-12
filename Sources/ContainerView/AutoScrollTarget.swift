@@ -1,6 +1,6 @@
 //
 //  AutoScrollTarget.swift
-//  CoreUI
+//  Nocturnal
 //
 //  Created by Sergei Mikhan on 12/27/19.
 //

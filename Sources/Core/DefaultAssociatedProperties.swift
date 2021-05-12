@@ -13,8 +13,6 @@ import RxSwift
 import RxCocoa
 
 private enum Associated {
-  static var source = "source"
-  static var sections = "sections"
   static var autoscrollObserver = "autoscrollObserver"
   static var disposeBag = "disposeBag"
   static var pullToRefreshSubject = "pullToRefreshSubject"
@@ -26,50 +24,6 @@ private enum Associated {
   static var bindDisposeBag = "bindDisposeBag"
   static var isHostApplingTransparency = "isHostApplingTransparency"
   static var currentNavigationBarTransparency = "currentNavigationBarTransparency"
-}
-
-public extension SectionsLoadable {
-  var source: EventDrivenLoaderSource? {
-    set {
-      objc_setAssociatedObject(self,
-                             &Associated.source,
-                             newValue,
-                             .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    get {
-      return objc_getAssociatedObject(self, &Associated.source) as? EventDrivenLoaderSource
-    }
-  }
-
-  var autoscrollObserver: AnyObserver<AutoScrollTarget>? {
-    set {
-      objc_setAssociatedObject(self,
-                             &Associated.autoscrollObserver,
-                             newValue,
-                             .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    get {
-      return objc_getAssociatedObject(self, &Associated.autoscrollObserver) as? AnyObserver<AutoScrollTarget>
-    }
-  }
-}
-
-public extension SectionableViewModel {
-
-  var sections: [Sectionable] {
-    set {
-      objc_setAssociatedObject(self,
-                             &Associated.sections,
-                             newValue,
-                             .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    get {
-      return objc_getAssociatedObject(self, &Associated.sections) as? [Sectionable] ?? []
-    }
-  }
 }
 
 public extension DisposableContainer {
@@ -172,22 +126,6 @@ public extension ViewStateContainer {
                              subject,
                              .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     return subject
-  }
-}
-
-public extension BindableDisposeBagContainer {
-
-  var bindDisposeBag: DisposeBag? {
-    set {
-      objc_setAssociatedObject(self,
-                             &Associated.bindDisposeBag,
-                             newValue,
-                             .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    get {
-      return objc_getAssociatedObject(self, &Associated.bindDisposeBag) as? DisposeBag
-    }
   }
 }
 

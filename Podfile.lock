@@ -17,13 +17,15 @@ PODS:
     - Alidade/Core
   - Alidade/UIExtension (5.1.8):
     - Alidade/Core
-  - Astrolabe (5.1.9):
-    - Astrolabe/Core (= 5.1.9)
-  - Astrolabe/Core (5.1.9):
-    - RxCocoa (~> 5)
-    - RxSwift (~> 5)
+  - Astrolabe (5.3):
+    - Astrolabe/Core (= 5.3)
+  - Astrolabe/Core (5.3):
+    - RxCocoa (~> 6)
+    - RxSwift (~> 6)
   - Nocturnal (0.1.0):
     - Nocturnal/Core (= 0.1.0)
+  - Nocturnal/ContainerView (0.1.0):
+    - Nocturnal/Core
   - Nocturnal/Core (0.1.0):
     - Alidade (~> 5)
     - Alidade/Associatable (~> 5)
@@ -33,56 +35,71 @@ PODS:
     - Alidade/String (~> 5)
     - Alidade/UI (~> 5)
     - Astrolabe (~> 5)
-    - RxCocoa (~> 5)
+    - RxCocoa (~> 6)
     - RxGesture
-    - RxSwift (~> 5)
+    - RxSwift (~> 6)
     - Sundial (~> 5)
   - Nocturnal/NavigationBar (0.1.0):
     - Nocturnal/Core
   - PinLayout (1.9.3)
-  - RxCocoa (5.1.1):
-    - RxRelay (~> 5)
-    - RxSwift (~> 5)
-  - RxGesture (3.0.2):
-    - RxCocoa (~> 5.1)
-    - RxSwift (~> 5.1)
-  - RxRelay (5.1.1):
-    - RxSwift (~> 5)
-  - RxSwift (5.1.2)
+  - RxCocoa (6.2.0):
+    - RxRelay (= 6.2.0)
+    - RxSwift (= 6.2.0)
+  - RxGesture (4.0.2):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
+  - RxRelay (6.2.0):
+    - RxSwift (= 6.2.0)
+  - RxSwift (6.2.0)
   - Sundial (5.1.22):
     - Astrolabe/Core
 
 DEPENDENCIES:
+  - "Astrolabe (from `git@github.com:netcosports/Astrolabe.git`, branch `kmm`)"
   - Nocturnal (from `.`)
+  - Nocturnal/ContainerView (from `.`)
   - Nocturnal/NavigationBar (from `.`)
   - PinLayout
+  - "Sundial (from `git@github.com:netcosports/Sundial.git`, branch `kmm`)"
 
 SPEC REPOS:
   trunk:
     - Alidade
-    - Astrolabe
     - PinLayout
     - RxCocoa
     - RxGesture
     - RxRelay
     - RxSwift
-    - Sundial
 
 EXTERNAL SOURCES:
+  Astrolabe:
+    :branch: kmm
+    :git: "git@github.com:netcosports/Astrolabe.git"
   Nocturnal:
     :path: "."
+  Sundial:
+    :branch: kmm
+    :git: "git@github.com:netcosports/Sundial.git"
+
+CHECKOUT OPTIONS:
+  Astrolabe:
+    :commit: 8c7471ae05a998b2b5452538250213ed7f1a6ef7
+    :git: "git@github.com:netcosports/Astrolabe.git"
+  Sundial:
+    :commit: 1f68ae80f426dc4cf829b2ac015f1d3645d99745
+    :git: "git@github.com:netcosports/Sundial.git"
 
 SPEC CHECKSUMS:
   Alidade: ca003a9524ffcc47abdb8ecc2ecd92734d48767b
-  Astrolabe: 97d5636ab06045bdfde8b420197b9aa85d5dff43
-  Nocturnal: abca7492e64df8c5e4047f47b41ffab6be523794
+  Astrolabe: 039225a4ab8747032c84fe9f4655c6bc73ebe6e2
+  Nocturnal: 9ca6d0fd11470edbb00f75c21ffb7e42ffb4c585
   PinLayout: 4d8733121f8687edcc8f00c19bf1379d12808767
-  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
-  RxGesture: d6bd7447ca3a596c7a9702a6a2b6a2bb5d8bae54
-  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
-  RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
-  Sundial: 2b60ec229eab90fde2e8401028e4f8bbf4ef16ad
+  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
+  RxGesture: f059f2aeef966fb17dad56ee440e76410f10e55f
+  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
+  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
+  Sundial: e08543ee943fc9d4d21520688eb7a1ed2ef52621
 
-PODFILE CHECKSUM: e2053e6eb8b7e498ab765f62df1cd0ebd4107677
+PODFILE CHECKSUM: 388647654a5b13bc3459e02e81673c8cae46420e
 
 COCOAPODS: 1.10.1

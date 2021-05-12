@@ -63,27 +63,6 @@ open class BaseViewController: UIViewController {
 
   open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    //setupNavigationItem()
   }
-
-//  open func setupNavigationItem() {
-//    navigationItem.leftBarButtonItem = leftBarButtonItem
-//    navigationItem.rightBarButtonItem = rightBarButtonItem
-//    navigationItem.leftBarButtonItem?.tintColor = backButtonColor
-//    navigationItem.titleView = titleView
-//    navigationController?.navigationBar.subviews.forEach { $0.clipsToBounds = false }
-//  }
-//
-//  open var rightBarButtonItem: UIBarButtonItem? {
-//    return nil
-//  }
-//
-//  open var leftBarButtonItem: UIBarButtonItem? {
-//    return nil
-//  }
-//
-//  open var titleView: UIView? {
-//    return nil
-//  }
 }
 

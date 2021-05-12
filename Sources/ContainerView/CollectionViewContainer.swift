@@ -1,6 +1,6 @@
 //
 //  CollectionViewContainer.swift
-//  CoreUI
+//  Nocturnal
 //
 //  Created by Sergei Mikhan on 12/28/19.
 //
@@ -13,14 +13,13 @@ import RxCocoa
 
 public protocol CollectionViewContainer {
   associatedtype Source: ReusableSource where Source.Container == UICollectionView
-
   var containerView: CollectionView<Source> { get }
 }
 
-public extension SourceContainer where Self: CollectionViewContainer, Source: EventDrivenLoaderSource {
-
-  var source: EventDrivenLoaderSource {
-    return containerView.source
+extension CollectionView: CollectionViewContainer {
+  public typealias Source = T
+  public var containerView: CollectionView<T> {
+    return self
   }
 }
 
@@ -44,39 +43,6 @@ public extension ReusableSource {
       }
     }
     return indexPath
-  }
-}
-
-public extension CollectionViewContainer where
-  Self: AutoscrollContainer &
-        ViewStateContainer &
-        DisposableContainer &
-        PullToRefreshContainer {
-
-  typealias Decoration = EmptyViewCollectionViewLayout.LoaderDecoration
-  typealias EmptyViewCell = CollectionViewCell & Reusable & Decorationable
-  func setup<EmptyView: EmptyViewCell, LoaderView: Decoration>(emptyViewLayout: EmptyViewCollectionViewLayout,
-                                                               emptyView: EmptyView.Type,
-                                                               emptyViewData: EmptyView.Data,
-                                                               loaderView: LoaderView.Type)
-    where EmptyView.Data: Equatable {
-
-    emptyViewLayout.register(emptyViewDecoration: emptyView,
-                             emptyViewData: emptyViewData,
-                             showEmptyView: emptyViewSubject)
-
-    emptyViewLayout.register(loaderDecoration: LoaderView.self,
-                             showLoaderView: loaderViewSubject)
-
-    subscribeToAutoscrollEvents()
-
-    containerView.collectionViewLayout = emptyViewLayout
-    switch emptyViewLayout.scrollDirection {
-    case .horizontal:
-      containerView.alwaysBounceHorizontal = true
-    default:
-      containerView.alwaysBounceVertical = true
-    }
   }
 }
 
@@ -125,43 +91,11 @@ public extension AutoscrollContainer where Self: DisposableContainer & Collectio
   }
 }
 
-public extension Lifecycle where Self: UIViewController {
+extension UIViewController: Lifecycle {
 
-  var visibility: Observable<Bool> {
+  public var visibility: Observable<Bool> {
     let visible = self.rx.sentMessage(#selector(UIViewController.viewWillAppear(_:))).map { _ in return true}
     let invisible = self.rx.sentMessage(#selector(UIViewController.viewDidDisappear(_:))).map { _ in return false }
     return Observable.merge(visible, invisible)
-  }
-}
-
-public extension CollectionViewContainer where Self: UIViewController, Self: DisposableContainer
-& PullToRefreshContainer & ViewStateContainer {
-
-  func setupContainerView(with refreshControl: UIRefreshControl?) {
-    view.addSubview(containerView)
-    containerView.source.hostViewController = self
-    if let refreshControl = refreshControl {
-      refreshControl.rx
-        .controlEvent(.valueChanged)
-        .bind(to: pullToRefreshSubject)
-        .disposed(by: disposeBag)
-
-      containerView.refreshControl = refreshControl
-      loaderViewSubject.filter { !$0 } .bind(to: refreshControl.rx.isRefreshing).disposed(by: disposeBag)
-    }
-    containerView.showsVerticalScrollIndicator = false
-    containerView.showsHorizontalScrollIndicator = false
-    if #available(iOS 11.0, *) {
-      containerView.contentInsetAdjustmentBehavior = .never
-    }
-
-    // FIXME: not so sure that we still need this
-    containerView.rx.observe(CGRect.self, "bounds")
-      .observeOn(MainScheduler.asyncInstance)
-      .distinctUntilChanged()
-      .subscribe(onNext: { [weak self] _ in
-        self?.containerView.collectionViewLayout.invalidateLayout()
-      })
-      .disposed(by: disposeBag)
   }
 }

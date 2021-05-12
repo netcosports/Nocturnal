@@ -1,6 +1,6 @@
 
-#use_modular_headers!
-use_frameworks!
+use_modular_headers!
+#use_frameworks!
 inhibit_all_warnings!
 
 install! 'cocoapods', :disable_input_output_paths => true
@@ -9,8 +9,12 @@ platform :ios, '11.0'
 
 target 'Demo' do
 
+  pod 'Astrolabe', :git => 'git@github.com:netcosports/Astrolabe.git', :branch => 'kmm'
+  pod 'Sundial', :git => 'git@github.com:netcosports/Sundial.git', :branch => 'kmm'
+
   pod 'Nocturnal', :path => '.'
   pod 'Nocturnal/NavigationBar', :path => '.'
+  pod 'Nocturnal/ContainerView', :path => '.'
 
   pod 'PinLayout'
 end

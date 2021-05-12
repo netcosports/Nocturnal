@@ -10,7 +10,7 @@ import Nocturnal
 
 import Astrolabe
 
-class DetailsViewController: ViewController, NavigationBarTransparencyHost, Lifecycle, DisposableContainer, Scrolling {
+class DetailsViewController: ViewController, NavigationBarTransparencyHost, DisposableContainer, Scrolling {
   let collectionView = CollectionView<CollectionViewSource>()
 
   override var backgroundColor: UIColor? {
