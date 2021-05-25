@@ -19,7 +19,7 @@ public extension UINavigationController {
   }
 }
 
-public protocol TransparentNavigationBarSupport: class {
+public protocol TransparentNavigationBarSupport: AnyObject {
 
   typealias NavigationBarTransparencyController = NavigationBarTransparency & UIViewController
 
@@ -48,7 +48,7 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
       viewControllerAndAnimated.viewController.navigationItem.backBarButtonItem = item
       if let coordinator = navigationController.topViewController?.transitionCoordinator {
         coordinator.notifyWhenInteractionChanges { context in
-          (navigationController as? TransparentNavigationBarSupport)?.finalizeInteractiveTransition(context.isCancelled)
+					navigationController.finalizeInteractiveTransition(context.isCancelled)
         }
       }
 

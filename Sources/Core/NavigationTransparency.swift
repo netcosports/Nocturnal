@@ -88,7 +88,7 @@ public extension TransparentNavigationBar where Self: UINavigationBar & Disposab
   }
 }
 
-public protocol NavigationBarTransparency: class {
+public protocol NavigationBarTransparency: AnyObject {
 
   var currentNavigationBarTransparency: BehaviorSubject<CGFloat> { get }
   var isHostApplingTransparency: Bool { get set }

@@ -13,7 +13,7 @@ let package = Package(
 		dependencies: [
 			.package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "5.0.0")),
 			.package(name: "RxGesture", url: "https://github.com/RxSwiftCommunity/RxGesture.git", .upToNextMajor(from: "3.0.0")),
-			.package(name: "Sundial", url: "https://github.com/netcosports/Sundial.git", .upToNextMajor(from: "5.1.22")),
+			.package(name: "Sundial", url: "https://github.com/netcosports/Sundial.git", .upToNextMajor(from: "5.1.23")),
 			.package(name: "Astrolabe", url: "https://github.com/netcosports/Astrolabe.git", .upToNextMajor(from: "5.0.0")),
 			.package(name: "Alidade", url: "https://github.com/netcosports/Alidade.git", .upToNextMajor(from: "5.1.9"))
 		],

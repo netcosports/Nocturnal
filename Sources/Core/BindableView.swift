@@ -11,7 +11,7 @@ import Sundial
 import RxSwift
 import RxCocoa
 
-public protocol DisposableContainer: class {
+public protocol DisposableContainer: AnyObject {
 
   var disposeBag: DisposeBag { get }
 }

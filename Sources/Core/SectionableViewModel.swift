@@ -11,7 +11,7 @@ import Sundial
 import RxSwift
 import RxCocoa
 
-public protocol SectionsLoadable: class {
+public protocol SectionsLoadable: AnyObject {
   var source: EventDrivenLoaderSource? { get set }
   var autoscrollObserver: AnyObserver<AutoScrollTarget>? { get set }
   func loadAndMergeSections(from intent: LoaderIntent) -> Observable<LoaderResultEvent>

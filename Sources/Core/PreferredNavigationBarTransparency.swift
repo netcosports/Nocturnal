@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-public protocol PreferredNavigationBarTransparency: class {
+public protocol PreferredNavigationBarTransparency: AnyObject {
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport { get }
 

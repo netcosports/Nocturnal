@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-public protocol SliderSheetContainer: class {
+public protocol SliderSheetContainer: AnyObject {
   var sliderSheetHeight: CGFloat { get set }
   func enableSliderSheet(for sliderSheetView: UIView, in range: ClosedRange<CGFloat>, anchor: Anchor,
   initialHeight: CGFloat?)

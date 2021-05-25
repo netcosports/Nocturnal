@@ -1,7 +1,7 @@
 import Foundation
 import RxSwift
 
-public protocol Parentable: class {
+public protocol Parentable: AnyObject {
 
   typealias Children = [UUID: Any]
   var identifier: UUID { get }
