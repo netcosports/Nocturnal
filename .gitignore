@@ -18,6 +18,8 @@ DerivedData
 .idea/
 Pods/
 *.orig
+.swiftpm
+*.resolved
 
 # Fastlane
 fastlane/test_output
