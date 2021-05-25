@@ -52,7 +52,7 @@ class HomeViewController: ViewController, NavigationBarTransparencyHost, Lifecyc
   }
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport {
-    .disabled
+    .enabled
   }
 
   override func viewDidLoad() {

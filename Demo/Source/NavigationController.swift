@@ -10,10 +10,6 @@ import Nocturnal
 
 import RxSwift
 
-public enum Dimens {
-  static let navigationBarHeight: CGFloat = 88.0
-}
-
 // MARK: - Implementation
 public final class NavigationController: UINavigationController, TransparentNavigationBarSupport, DisposableContainer {
   public let disposeBag = DisposeBag()
@@ -54,7 +50,11 @@ public final class NavigationController: UINavigationController, TransparentNavi
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    navBar.pin.top().height(UIApplication.shared.statusBarFrame.height + Dimens.navigationBarHeight).horizontally()
+    guard let hegiht = customNavigationBar?.currentHeight else {
+      return
+    }
+
+    navBar.pin.top().height(UIApplication.shared.statusBarFrame.height + hegiht).horizontally()
   }
 
   public override func viewWillAppear(_ animated: Bool) {

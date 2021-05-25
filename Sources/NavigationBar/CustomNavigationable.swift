@@ -9,6 +9,8 @@ import RxSwift
 
 public protocol CustomNavigationable: class {
 
+  var isInTransition: Bool { get set }
+
   var inset: UIEdgeInsets { get }
 
   var fromBackgroundView: UIView { get }
@@ -22,7 +24,7 @@ public protocol CustomNavigationable: class {
 
   func startTransition(from fromHost: NavigationBarHostable?, to toHost: NavigationBarHostable?)
   func updateTransition(with progress: CGFloat)
-  func finishTransition()
+  func finishTransition(isCanceled: Bool)
 }
 
 extension CustomNavigationable where Self: UIView {
@@ -39,18 +41,29 @@ extension CustomNavigationable where Self: UIView {
     from fromHost: NavigationBarHostable?,
     to toHost: NavigationBarHostable?
   ) {
+    if isInTransition {
+      return
+    }
+
+    isUserInteractionEnabled = false
+    isInTransition = true
+    subviews.forEach { $0.removeFromSuperview() }
+
     self.fromHost = fromHost
     self.toHost = toHost
 
-    toBackgroundView.superview?.bringSubviewToFront(toBackgroundView)
-    fromBackgroundView.superview?.bringSubviewToFront(fromBackgroundView)
+    fromBackgroundView.superview?.sendSubviewToBack(fromBackgroundView)
+    toBackgroundView.superview?.sendSubviewToBack(toBackgroundView)
+
     fromContainer.superview?.bringSubviewToFront(fromContainer)
     toContainer.superview?.bringSubviewToFront(toContainer)
 
     fromBackgroundView.alpha = self.fromAlpha
+    toBackgroundView.alpha = 0.0
     fromContainer.alpha = 1.0
     toContainer.alpha = 0.0
 
+    self.setNeedsLayout()
     self.layoutIfNeeded()
   }
 
@@ -61,23 +74,52 @@ extension CustomNavigationable where Self: UIView {
     toContainer.alpha = progress
   }
 
-  public func finishTransition() {
-    fromContainer.subviews.forEach { $0.removeFromSuperview() }
+  public func finishTransition(isCanceled: Bool) {
+    isInTransition = false
+    isUserInteractionEnabled = true
 
-    fromContainer.alpha = 0.0
-    toBackgroundView.alpha = self.toAlpha
-    toContainer.alpha = 1.0
+    let targetContainer: UIView
+    let targetBackground: UIView
+    let targetAlpha: CGFloat
+
+    let otherContainer: UIView
+    let otherBackground: UIView
+    let otherAlpha: CGFloat = 0.0
+
+    if isCanceled {
+      targetContainer = fromContainer
+      targetBackground = fromBackgroundView
+      targetAlpha = self.fromAlpha
+
+      otherContainer = toContainer
+      otherBackground = toBackgroundView
+    } else {
+      targetContainer = toContainer
+      targetBackground = toBackgroundView
+      targetAlpha = self.toAlpha
+
+      otherContainer = fromContainer
+      otherBackground = fromBackgroundView
+    }
+
+    otherContainer.subviews.forEach { $0.removeFromSuperview() }
+
+    otherBackground.alpha = otherAlpha
+    otherContainer.alpha = otherAlpha
+
+    targetBackground.alpha = targetAlpha
+    targetContainer.alpha = 1.0
   }
 
   public func layout(host: NavigationBarHostable?, into view: UIView) {
-    guard let host = host else { return }
+    guard let host = host, let item = host.customNavigationItem else { return }
 
     view.frame = self.bounds
-    let leading = host.leadingViews
-    let trailing = host.trailingViews
+    let leading = item.leadingViews
+    let trailing = item.trailingViews
 
     let width = self.width - inset.left - inset.right
-    let height = self.height - inset.top - inset.bottom
+    let height = item.height
 
     var leadingX: CGFloat = inset.left
     var trailingX: CGFloat = width - inset.right
@@ -94,7 +136,7 @@ extension CustomNavigationable where Self: UIView {
       trailingX -= $0.width
     }
 
-    guard let title = host.titleView else {
+    guard let title = item.titleView else {
       return
     }
     let availableSpace = trailingX - leadingX
@@ -108,23 +150,19 @@ extension CustomNavigationable where Self: UIView {
   }
 
   public func integrate(host: NavigationBarHostable?, into view: UIView, backgroundView: UIView) {
-    guard let host = host else { return }
+    guard let host = host, let item = host.customNavigationItem else { return }
     view.subviews.forEach { $0.removeFromSuperview() }
-    if backgroundView.superview == nil {
-      addSubview(backgroundView)
-    }
-    backgroundView.backgroundColor = host.backgroundColor
+    addSubview(backgroundView)
+    addSubview(view)
 
-    if view.superview == nil {
-      self.addSubview(view)
-    }
-    host.leadingViews.forEach {
+    backgroundView.backgroundColor = item.backgroundColor
+    item.leadingViews.forEach {
       view.addSubview($0.view)
     }
-    host.trailingViews.forEach {
+    item.trailingViews.forEach {
       view.addSubview($0.view)
     }
-    guard let title = host.titleView else {
+    guard let title = item.titleView else {
       return
     }
     view.addSubview(title.view)

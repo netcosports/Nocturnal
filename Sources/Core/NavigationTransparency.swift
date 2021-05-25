@@ -19,7 +19,9 @@ public protocol TransparentNavigationBar {
 
   func startTransition(from fromViewController: UIViewController?, to toViewController: UIViewController?)
   func updateTransition(with progress: CGFloat)
-  func finishTransition()
+  func finishTransition(isCanceled: Bool)
+
+  var currentHeight: CGFloat { get }
 }
 
 public extension TransparentNavigationBar {
@@ -32,7 +34,7 @@ public extension TransparentNavigationBar {
 
   }
 
-  func finishTransition() {
+  func finishTransition(isCanceled: Bool) {
 
   }
 }
@@ -105,7 +107,7 @@ public extension NavigationBarTransparency where Self: UIViewController & Scroll
       guard let navigationBar = (self?.navigationController as? TransparentNavigationBarSupport)?.customNavigationBar else {
         return
       }
-      navigationBar.transparencySubject.onNext(1.0 - transparency)
+      navigationBar.transparencySubject.onNext(transparency)
     }).disposed(by: disposeBag)
   }
 }

@@ -16,9 +16,13 @@ open class ViewController: BaseViewController, NavigationBarHostable {
 
   open override func viewDidLoad() {
     super.viewDidLoad()
-    additionalSafeAreaInsets = .init(top: Dimens.navigationBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
+    additionalSafeAreaInsets = .init(top: navigationBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
 
     back.rx.tap.subscribe(onNext: { [weak self] in
+      self?.navigationController?.popViewController(animated: true)
+    }).disposed(by: disposeBag)
+
+    menu.rx.tap.subscribe(onNext: { [weak self] in
       self?.navigationController?.popViewController(animated: true)
     }).disposed(by: disposeBag)
   }
@@ -27,6 +31,14 @@ open class ViewController: BaseViewController, NavigationBarHostable {
     let back = UIButton()
     back.setTitleColor(.black, for: .normal)
     back.setTitle("BACK", for: .normal)
+    back.backgroundColor = .orange
+    return back
+  }()
+
+  let menu: UIButton = {
+    let back = UIButton()
+    back.setTitleColor(.black, for: .normal)
+    back.setTitle("MENU", for: .normal)
     back.backgroundColor = .orange
     return back
   }()
@@ -49,6 +61,26 @@ open class ViewController: BaseViewController, NavigationBarHostable {
     return test
   }()
 
+  open override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    currentNavigationItem = NavigationItem(
+      height: navigationBarHeight,
+      backgroundColor: backgroundColor,
+      titleView: titleView,
+      leadingViews: leadingViews,
+      trailingViews: trailingViews
+    )
+  }
+
+  private var currentNavigationItem: NavigationItemable?
+  open var customNavigationItem: NavigationItemable? {
+    currentNavigationItem
+  }
+
+  open var navigationBarHeight: CGFloat {
+    return 80.0
+  }
+
   open var backgroundColor: UIColor? {
     .red
   }
@@ -58,9 +90,15 @@ open class ViewController: BaseViewController, NavigationBarHostable {
   }
 
   open var leadingViews: [BarItemViewable] {
-    return [
-      BarItemView(view: back, width: 120)
-    ]
+    if (self.navigationController?.viewControllers.count ?? 0) > 1 {
+      return [
+        BarItemView(view: back, width: 120)
+      ]
+    } else {
+      return [
+        BarItemView(view: menu, width: 120)
+      ]
+    }
   }
 
   open var trailingViews: [BarItemViewable] {

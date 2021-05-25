@@ -7,21 +7,25 @@
 
 import RxSwift
 
-public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
+open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
+
+  public var isInTransition = false
 
   private let disposeBag = DisposeBag()
 
   public let fromBackgroundView = UIView()
   public let toBackgroundView = UIView()
 
+  public var visibleWhenInTop = true
+
   init() {
     super.init(frame: .zero)
     transparencySubject.subscribe(onNext: { [weak self] progress in
-      self?.toBackgroundView.alpha = progress
+      self?.toBackgroundView.alpha = self?.visibleWhenInTop == true ? progress : 1.0 - progress
     }).disposed(by: disposeBag)
   }
 
-  required init?(coder: NSCoder) {
+  required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -37,14 +41,14 @@ public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationB
 
   public var transparencySubject = PublishSubject<CGFloat>()
 
-  public var inset: UIEdgeInsets {
+  open var inset: UIEdgeInsets {
     .init(top: UIApplication.shared.statusBarFrame.height, left: 0.0, bottom: 0.0, right: 0.0)
   }
 
   public var fromContainer = UIView()
   public var toContainer = UIView()
 
-  public override func layoutSubviews() {
+  open override func layoutSubviews() {
     super.layoutSubviews()
 
     toBackgroundView.frame = self.bounds
@@ -54,14 +58,28 @@ public class NavigationBar: UIView, CustomNavigationable, TransparentNavigationB
     layout(host: toHost, into: toContainer)
   }
 
-  public var fromHost: NavigationBarHostable? {
+  public weak var fromHost: NavigationBarHostable? {
     didSet {
       self.integrate(host: fromHost, into: fromContainer, backgroundView: fromBackgroundView)
     }
   }
-  public var toHost: NavigationBarHostable? {
+  public weak var toHost: NavigationBarHostable? {
     didSet {
       self.integrate(host: toHost, into: toContainer, backgroundView: toBackgroundView)
     }
+  }
+
+  public var currentHeight: CGFloat {
+    guard let toHeight = self.toHost?.customNavigationItem?.height else {
+      return 0.0
+    }
+
+    guard let fromHeight = self.fromHost?.customNavigationItem?.height else {
+      return toHeight
+    }
+
+    // FIXME: need to find more proper way to get progres
+    let progress = toContainer.alpha
+    return fromHeight + (toHeight - fromHeight) * progress
   }
 }

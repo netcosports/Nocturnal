@@ -43,7 +43,7 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
 
   func setupTransparentNavigationBar() {
     self.rx.willShow.subscribe(onNext: { [weak self] viewControllerAndAnimated in
-      guard let navigationController = self else { return }
+      guard let navigationController = self, let self = self else { return }
       let item = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
       viewControllerAndAnimated.viewController.navigationItem.backBarButtonItem = item
       if let coordinator = navigationController.topViewController?.transitionCoordinator {
@@ -51,37 +51,41 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
           (navigationController as? TransparentNavigationBarSupport)?.finalizeInteractiveTransition(context.isCancelled)
         }
       }
+
+      self.customNavigationBar?.startTransition(from: self.fromViewController, to: self.toViewController)
+      if let toVC = self.toViewController,
+        let value = try? toVC.currentNavigationBarTransparency.value(),
+        !self.isGesturePopShouldBegin {
+        let update = {
+          UIView.animate(withDuration: 0.25, animations: {
+            self.customNavigationBar?.updateTransition(with: 1.0)
+            self.customNavigationBar?.transparencySubject.onNext(value)
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+          }, completion: { _ in
+            self.customNavigationBar?.finishTransition(isCanceled: false)
+            toVC.isHostApplingTransparency = true
+          })
+        }
+        if viewControllerAndAnimated.animated {
+          update()
+        } else {
+          UIView.performWithoutAnimation {
+            update()
+          }
+        }
+      }
     }).disposed(by: disposeBag)
+
+
   }
 
   func interactiveChange(toController: NavigationBarTransparencyController?,
                          fromController: NavigationBarTransparencyController?) {
-    customNavigationBar?.startTransition(from: fromController, to: toController)
-
     toViewController = toController
     fromViewController = fromController
     fromViewController?.isHostApplingTransparency = false
     toViewController?.loadViewIfNeeded()
-    if let toVC = toViewController,
-      let value = try? toVC.currentNavigationBarTransparency.value(),
-      !isGesturePopShouldBegin {
-      let update = {
-        UIView.animate(withDuration: 0.25, animations: {
-          self.customNavigationBar?.updateTransition(with: 1.0)
-          self.customNavigationBar?.transparencySubject.onNext(value)
-        }, completion: { _ in
-          self.customNavigationBar?.finishTransition()
-          toVC.isHostApplingTransparency = true
-        })
-      }
-      if viewControllers.isEmpty {
-        UIView.performWithoutAnimation {
-          update()
-        }
-      } else {
-        update()
-      }
-    }
   }
 
   func interactivePush(_ viewController: UIViewController) {
@@ -121,8 +125,6 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
   }
 
   func startInteractiveTransition() {
-    customNavigationBar?.startTransition(from: fromViewController, to: toViewController)
-
     fromViewController?.isHostApplingTransparency = false
     toViewController?.isHostApplingTransparency = false
   }
@@ -131,10 +133,13 @@ public extension TransparentNavigationBarSupport where Self: UINavigationControl
     customNavigationBar?.updateTransition(with: progress)
 
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)
+
+    view.setNeedsLayout()
+    view.layoutIfNeeded()
   }
 
   func finalizeInteractiveTransition(_ isCanceled: Bool) {
-    customNavigationBar?.finishTransition()
+    customNavigationBar?.finishTransition(isCanceled: isCanceled)
 
     let progress: CGFloat = isCanceled ? 0.0 : 1.0
     customNavigationBar?.applyInteractive(from: fromViewController, to: toViewController, value: progress)

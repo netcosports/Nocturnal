@@ -26,7 +26,15 @@ class DetailsViewController: ViewController, NavigationBarTransparencyHost, Life
   }
 
   var preferredNavigationBarTransparency: NavigationBarTransparencySupport {
-    .disabled
+    .enabled
+  }
+
+  override var navigationBarHeight: CGFloat {
+    return 120.0
+  }
+
+  override var trailingViews: [BarItemViewable] {
+    return []
   }
 
   override func viewDidLoad() {
