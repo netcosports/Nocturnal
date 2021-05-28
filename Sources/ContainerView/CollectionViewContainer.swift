@@ -49,7 +49,7 @@ public extension ReusableSource {
 public extension AutoscrollContainer where Self: DisposableContainer & CollectionViewContainer {
 
   func subscribeToAutoscrollEvents() {
-    let autoScrollObservable = autoScrollSubject.asObservable().observeOn(MainScheduler.instance)
+    let autoScrollObservable = autoScrollSubject.asObservable().observeOn(ConcurrentMainScheduler.instance)
     autoScrollObservable.flatMap { [weak self] target -> Observable<Void> in
       guard let self = self else { return .empty() }
       var index: IndexPath?
