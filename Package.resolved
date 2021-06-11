@@ -1,0 +1,79 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AEXML",
+        "repositoryURL": "https://github.com/tadija/AEXML.git",
+        "state": {
+          "branch": null,
+          "revision": "502c4d43a6cc9c395d19111e09dc62ad834977b5",
+          "version": "4.6.0"
+        }
+      },
+      {
+        "package": "Alidade",
+        "repositoryURL": "https://github.com/netcosports/Alidade.git",
+        "state": {
+          "branch": "master",
+          "revision": "9d5b44a5fb115b9cd7142b56cb347bec7928f987",
+          "version": null
+        }
+      },
+      {
+        "package": "Astrolabe",
+        "repositoryURL": "https://github.com/netcosports/Astrolabe.git",
+        "state": {
+          "branch": null,
+          "revision": "e9478a3daf6222e026f74a078711b4dcec4c8fd6",
+          "version": "5.1.9"
+        }
+      },
+      {
+        "package": "Gnomon",
+        "repositoryURL": "https://github.com/netcosports/Gnomon.git",
+        "state": {
+          "branch": null,
+          "revision": "9ef48c96d8f85ee58ca819655b4ace8a07d785f1",
+          "version": "5.2.4"
+        }
+      },
+      {
+        "package": "RxGesture",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxGesture.git",
+        "state": {
+          "branch": null,
+          "revision": "867f176b6695829e350fafc00b5a849bb46a1857",
+          "version": "3.0.3"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "254617dd7fae0c45319ba5fbea435bf4d0e15b5d",
+          "version": "5.1.2"
+        }
+      },
+      {
+        "package": "Sundial",
+        "repositoryURL": "https://github.com/netcosports/Sundial.git",
+        "state": {
+          "branch": "master",
+          "revision": "e4b61d743b12234fea1cb01445d57326e98128c3",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftyJSON",
+        "repositoryURL": "https://github.com/SwiftyJSON/SwiftyJSON.git",
+        "state": {
+          "branch": null,
+          "revision": "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
+          "version": "5.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
