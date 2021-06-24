@@ -67,16 +67,21 @@ public extension CollectionView {
       case .center:
         point = CGPoint(x: 0.0, y: attributes.frame.midY - 0.5 * (self.frame.height - attributes.frame.height) - target.offset)
       case .end:
-        point = CGPoint(x: 0.0, y: attributes.frame.minY + self.frame.height - attributes.frame.height + target.offset)
+        var y = attributes.frame.maxY - self.frame.height + target.offset
+        if #available(iOS 11.0, *), keepInsideSafeArea {
+          y += self.contentInset.bottom + layout.minimumLineSpacing
+        }
+        point = CGPoint(x: 0.0, y: y)
       case .start:
         var y = attributes.frame.minY
+        // FIXME: do we need to use safe area insets? or we can use contentInset of collection view itself?
         if #available(iOS 11.0, *), keepInsideSafeArea, let view = self.source.hostViewController?.view {
           y -= view.safeAreaInsets.top + layout.minimumLineSpacing
         }
         point = CGPoint(x: 0.0, y: y - target.offset)
       }
-      if point.y + self.frame.height > (layout.collectionViewContentSize.height + self.contentInset.bottom) {
-        point = CGPoint(x: 0.0, y: layout.collectionViewContentSize.height - self.height - 1.0)
+      if point.y + self.frame.height > (layout.collectionViewContentSize.height + self.contentInset.bottom  + layout.minimumLineSpacing) {
+        point = CGPoint(x: 0.0, y: layout.collectionViewContentSize.height + self.contentInset.bottom + layout.minimumLineSpacing - self.height - 1.0)
       } else if point.y < 0.0 {
         point = CGPoint(x: 0.0, y: -self.contentInset.top)
       }
