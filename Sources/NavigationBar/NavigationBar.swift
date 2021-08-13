@@ -17,7 +17,6 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
   public let toBackgroundView = UIView()
 
   public var visibleWhenInTop = true
-  public var frameToIgnore: CGRect = .zero
 
   init() {
     super.init(frame: .zero)
@@ -83,11 +82,11 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
     let progress = toContainer.alpha
     return fromHeight + (toHeight - fromHeight) * progress
   }
+
   open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-      if frameToIgnore.contains(point) {
-        return nil
-      } else {
-        return super.hitTest(point, with: event)
-      }
+    guard let view = super.hitTest(point, with: event) else {
+      return nil
     }
+    return view as? UIControl
+  }
 }

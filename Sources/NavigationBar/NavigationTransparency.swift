@@ -22,7 +22,6 @@ public protocol TransparentNavigationBar {
   func finishTransition(isCanceled: Bool)
 
   var currentHeight: CGFloat { get }
-  var frameToIgnore: CGRect { get set }
 }
 
 public extension TransparentNavigationBar {
