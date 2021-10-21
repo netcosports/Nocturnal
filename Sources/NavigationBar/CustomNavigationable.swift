@@ -135,6 +135,14 @@ extension CustomNavigationable where Self: UIView {
       $0.view.frame = CGRect(x: trailingX - $0.width, y: y, width: $0.width, height: height)
       trailingX -= $0.width
     }
+    
+    fromBackgroundView.subviews.forEach { subview in
+      subview.frame = view.bounds
+    }
+    
+    toBackgroundView.subviews.forEach { subview in
+      subview.frame = view.bounds
+    }
 
     guard let title = item.titleView else {
       return
@@ -155,7 +163,17 @@ extension CustomNavigationable where Self: UIView {
     addSubview(backgroundView)
     addSubview(view)
 
-    backgroundView.backgroundColor = item.backgroundColor
+    if let background = item.background {
+      switch background {
+      case .color(let color):
+        backgroundView.backgroundColor = color
+      case .image(let image):
+        let backgroundImageView = UIImageView(image: image)
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundView.addSubview(backgroundImageView)
+      }
+    }
+    
     item.leadingViews.forEach {
       view.addSubview($0.view)
     }
