@@ -13,8 +13,8 @@ public protocol CustomNavigationable: class {
 
   var inset: UIEdgeInsets { get }
 
-  var fromBackgroundView: UIView { get }
-  var toBackgroundView: UIView { get }
+  var fromBackgroundView: UIImageView { get }
+  var toBackgroundView: UIImageView { get }
 
   var fromHost: NavigationBarHostable? { get set }
   var toHost: NavigationBarHostable? { get set }
@@ -136,14 +136,6 @@ extension CustomNavigationable where Self: UIView {
       trailingX -= $0.width
     }
     
-    fromBackgroundView.subviews.forEach { subview in
-      subview.frame = view.bounds
-    }
-    
-    toBackgroundView.subviews.forEach { subview in
-      subview.frame = view.bounds
-    }
-
     guard let title = item.titleView else {
       return
     }
@@ -157,7 +149,7 @@ extension CustomNavigationable where Self: UIView {
     }
   }
 
-  public func integrate(host: NavigationBarHostable?, into view: UIView, backgroundView: UIView) {
+  public func integrate(host: NavigationBarHostable?, into view: UIView, backgroundView: UIImageView) {
     guard let host = host, let item = host.customNavigationItem else { return }
     view.subviews.forEach { $0.removeFromSuperview() }
     addSubview(backgroundView)
@@ -167,10 +159,10 @@ extension CustomNavigationable where Self: UIView {
       switch background {
       case .color(let color):
         backgroundView.backgroundColor = color
+        backgroundView.image = nil
       case .image(let image):
-        let backgroundImageView = UIImageView(image: image)
-        backgroundImageView.contentMode = .scaleAspectFill
-        backgroundView.addSubview(backgroundImageView)
+        backgroundView.image = image
+        backgroundView.backgroundColor = nil
       }
     }
     
