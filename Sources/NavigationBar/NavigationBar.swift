@@ -13,8 +13,8 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
 
   private let disposeBag = DisposeBag()
 
-  public let fromBackgroundView = UIView()
-  public let toBackgroundView = UIView()
+  public let fromBackgroundView = UIImageView()
+  public let toBackgroundView = UIImageView()
 
   public var visibleWhenInTop = true
 

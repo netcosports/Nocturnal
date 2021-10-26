@@ -12,9 +12,15 @@ public protocol BarItemViewable {
   var width: CGFloat { get }
 }
 
+@frozen
+public enum NavigationItemBackground {
+  case color(UIColor)
+  case image(UIImage)
+}
+
 public protocol NavigationItemable {
   var height: CGFloat { get }
-  var backgroundColor: UIColor? { get }
+  var background: NavigationItemBackground? { get }
   var titleView: BarItemViewable? { get }
   var leadingViews: [BarItemViewable] { get }
   var trailingViews: [BarItemViewable] { get }
@@ -22,20 +28,20 @@ public protocol NavigationItemable {
 
 public struct NavigationItem: NavigationItemable {
   public let height: CGFloat
-  public let backgroundColor: UIColor?
+  public let background: NavigationItemBackground?
   public let titleView: BarItemViewable?
   public let leadingViews: [BarItemViewable]
   public let trailingViews: [BarItemViewable]
 
   public init(
     height: CGFloat,
-    backgroundColor: UIColor?,
+    background: NavigationItemBackground?,
     titleView: BarItemViewable?,
     leadingViews: [BarItemViewable],
     trailingViews: [BarItemViewable]
   ) {
     self.height = height
-    self.backgroundColor = backgroundColor
+    self.background = background
     self.titleView = titleView
     self.leadingViews = leadingViews
     self.trailingViews = trailingViews
