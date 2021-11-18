@@ -10,6 +10,13 @@ import RxSwift
 public protocol BarItemViewable {
   var view: UIView { get }
   var width: CGFloat { get }
+  var respectsBarTransparency: Bool { get }
+}
+
+public extension BarItemViewable {
+  var respectsBarTransparency: Bool {
+    return false
+  }
 }
 
 @frozen
@@ -24,6 +31,12 @@ public protocol NavigationItemable {
   var titleView: BarItemViewable? { get }
   var leadingViews: [BarItemViewable] { get }
   var trailingViews: [BarItemViewable] { get }
+}
+
+public extension NavigationItemable {
+  var barViewableItems: [BarItemViewable] {
+    return leadingViews + trailingViews + (titleView.map{[$0]} ?? [])
+  }
 }
 
 public struct NavigationItem: NavigationItemable {
@@ -55,10 +68,12 @@ public protocol NavigationBarHostable: class {
 public struct BarItemView: BarItemViewable {
   public let view: UIView
   public let width: CGFloat
+  public let respectsBarTransparency: Bool
 
-  public init(view: UIView, width: CGFloat) {
+  public init(view: UIView, width: CGFloat, respectsBarTransparency: Bool = false) {
     self.view = view
     self.width = width
+    self.respectsBarTransparency = respectsBarTransparency
   }
 }
 

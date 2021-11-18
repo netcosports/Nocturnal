@@ -21,7 +21,11 @@ open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar
   init() {
     super.init(frame: .zero)
     transparencySubject.subscribe(onNext: { [weak self] progress in
-      self?.toBackgroundView.alpha = self?.visibleWhenInTop == true ? progress : 1.0 - progress
+      let alpha: CGFloat = self?.visibleWhenInTop == true ? progress : 1.0 - progress
+      self?.toBackgroundView.alpha = alpha
+      self?.toHost?.customNavigationItem?.barViewableItems
+        .filter {$0.respectsBarTransparency}
+        .forEach { $0.view.alpha = alpha }
     }).disposed(by: disposeBag)
   }
 
