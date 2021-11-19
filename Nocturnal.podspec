@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Nocturnal'
-  s.version = '6.0.1'
+  s.version = '6.0.2'
   s.summary = 'rx-based MVVM-C componets'
 
   s.homepage = 'https://github.com/netcosports/Nocturnal'
