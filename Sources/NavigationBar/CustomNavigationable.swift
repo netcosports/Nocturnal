@@ -36,7 +36,7 @@ extension CustomNavigationable where Self: UIView {
   public var toAlpha: CGFloat {
     (try? (toHost as? NavigationBarTransparency)?.currentNavigationBarTransparency.value()) ?? 1.0
   }
-
+  
   public func startTransition(
     from fromHost: NavigationBarHostable?,
     to toHost: NavigationBarHostable?
@@ -59,7 +59,7 @@ extension CustomNavigationable where Self: UIView {
     toContainer.superview?.bringSubviewToFront(toContainer)
 
     fromBackgroundView.alpha = self.fromAlpha
-    toBackgroundView.alpha = 0.0
+    toBackgroundView.alpha = isSameBackground ? self.toAlpha : 0.0
     fromContainer.alpha = 1.0
     toContainer.alpha = 0.0
 
@@ -70,7 +70,7 @@ extension CustomNavigationable where Self: UIView {
   public func updateTransition(with progress: CGFloat) {
     fromBackgroundView.alpha = self.fromAlpha * (1.0 - progress)
     fromContainer.alpha = 1.0 - progress
-    toBackgroundView.alpha = self.toAlpha * progress
+    toBackgroundView.alpha = isSameBackground ? self.toAlpha : self.toAlpha * progress
     toContainer.alpha = progress
   }
 
@@ -177,5 +177,15 @@ extension CustomNavigationable where Self: UIView {
     }
     view.addSubview(title.view)
     setNeedsLayout()
+  }
+  
+  private var isSameBackground: Bool {
+    if let fromImage = fromBackgroundView.image, let toImage = toBackgroundView.image {
+      return fromImage.isEqual(toImage)
+    }
+    if let fromColor = fromBackgroundView.backgroundColor, let toColor = toBackgroundView.backgroundColor {
+      return fromColor.isEqual(toColor)
+    }
+    return false
   }
 }
