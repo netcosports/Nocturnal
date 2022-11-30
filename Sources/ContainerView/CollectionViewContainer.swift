@@ -79,8 +79,20 @@ public extension AutoscrollContainer where Self: DisposableContainer & Collectio
           }
           guard let index = index else { return false }
           return index.section < sections.count && index.item < sections[index.section].cells.count
-        }
-        .map { _ in () }
+        }.flatMapLatest({ [weak self] _ -> Observable<Void> in
+          guard let containerView = self?.containerView else {
+            return .empty()
+          }
+
+          guard containerView.contentSize.isEmpty else {
+            return .just(())
+          }
+
+          return containerView.rx
+            .observe(CGSize.self, #keyPath(UICollectionView.contentSize))
+            .filter({ !($0 ?? .zero).isEmpty })
+            .map { _ in () }
+        })
         .take(1)
         .do(onNext: { [weak self] in
           guard let self = self else { return }
