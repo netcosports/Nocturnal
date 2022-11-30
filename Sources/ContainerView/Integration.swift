@@ -74,15 +74,6 @@ public extension CollectionViewContainer where
     containerView.showsVerticalScrollIndicator = false
     containerView.showsHorizontalScrollIndicator = false
 
-    // FIXME: not so sure that we still need this
-    containerView.rx.observe(CGRect.self, "bounds")
-      .observeOn(MainScheduler.asyncInstance)
-      .distinctUntilChanged()
-      .subscribe(onNext: { [weak self] _ in
-        self?.containerView.collectionViewLayout.invalidateLayout()
-      })
-      .disposed(by: disposeBag)
-
     if let refreshControl = refreshControl {
       refreshControl.rx
         .controlEvent(.valueChanged)

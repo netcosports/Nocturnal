@@ -89,7 +89,7 @@ public extension AutoscrollContainer where Self: DisposableContainer & Collectio
           }
 
           return containerView.rx
-            .observe(CGSize.self, #keyPath(UICollectionView.contentSize))
+            .observe(CGSize.self, #keyPath(UICollectionView.contentSize), retainSelf: false)
             .filter({ !($0 ?? .zero).isEmpty })
             .map { _ in () }
         })
