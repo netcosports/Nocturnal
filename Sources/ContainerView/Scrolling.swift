@@ -21,7 +21,7 @@ public extension Reactive where Base: UIScrollView {
     let offset = base.rx.contentOffset
       .map { $0.y }
     let contentSize = base.rx
-      .observe(CGSize.self, #keyPath(UICollectionView.contentSize), retainSelf: false)
+      .observe(CGSize.self, #keyPath(UICollectionView.contentSize), retainSelf: true)
       .distinctUntilChanged()
 
     return Observable.combineLatest(offset, contentSize)
