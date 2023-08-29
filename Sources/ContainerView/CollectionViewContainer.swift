@@ -62,7 +62,11 @@ public extension AutoscrollContainer where Self: DisposableContainer & Collectio
       guard let emptyViewLayout = self.containerView.collectionViewLayout as? PreparedLayout else { return .empty()
       }
       let sections = self.containerView.source.sections
-      if let index = index, index.section < sections.count && index.item < sections[index.section].cells.count {
+      if let index = index,
+         index.section < sections.count && index.item < sections[index.section].cells.count,
+         let layout = self.containerView.collectionViewLayout as? UICollectionViewFlowLayout,
+         let attributes = layout.layoutAttributesForItem(at: index)
+      {
         self.containerView.scroll(to: target)
         return .empty()
       }
