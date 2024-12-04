@@ -105,6 +105,8 @@ public extension CollectionView {
         point = CGPoint(x: self.contentInset.left, y: 0.0)
       }
     }
-    self.setContentOffset(point, animated: animated)
+    DispatchQueue.main.async {
+      self.setContentOffset(point, animated: animated)
+    }
   }
 }
