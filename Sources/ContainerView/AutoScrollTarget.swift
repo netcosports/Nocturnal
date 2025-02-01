@@ -101,7 +101,7 @@ public extension CollectionView {
       }
       if point.x + self.frame.width > (layout.collectionViewContentSize.width + self.contentInset.right) {
         point = CGPoint(x: layout.collectionViewContentSize.width - self.width - 1.0, y: 0.0)
-      } else if point.x < 0.0 {
+      } else if point.x < -self.contentInset.left {
         point = CGPoint(x: self.contentInset.left, y: 0.0)
       }
     }
