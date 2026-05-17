@@ -6,9 +6,7 @@
 //
 
 import UIKit
-#if SWIFT_PACKAGE
-	import AlidadeAssociatable
-#endif
+import Alidade
 
 public protocol RefreshControlable {
 
