@@ -8,7 +8,7 @@ let package = Package(
     .iOS(.v10)
   ],
   products: [
-    .library(name: "NocturnalCore", targets: ["NocturnalCore"]),
+    .library(name: "Nocturnal", targets: ["Nocturnal"]),
   ],
   dependencies: [
     .package(url: "https://github.com/ReactiveX/RxSwift.git", .upToNextMajor(from: "6.0.0")),
@@ -18,14 +18,14 @@ let package = Package(
     .package(name: "Alidade", url: "https://github.com/netcosports/Alidade.git", .upToNextMajor(from: "5.0.0"))
   ],
   targets: [
-    .target(name: "NocturnalCore",
+    .target(name: "Nocturnal",
             dependencies: ["RxSwift",
                            .product(name: "RxCocoa", package: "RxSwift"),
                            "RxGesture",
                            "Sundial",
                            "Astrolabe",
                            .product(name: "Alidade", package: "Alidade")],
-            path: "./Sources/Core"),
+            path: "./Sources"),
   ],
   swiftLanguageVersions: [.v5]
 )
