@@ -5,6 +5,7 @@
 //  Created by Sergei Mikhan on 11.03.21.
 //
 
+import UIKit
 import RxSwift
 
 public protocol BarItemViewable {

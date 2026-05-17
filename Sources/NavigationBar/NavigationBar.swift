@@ -4,7 +4,7 @@
 //
 //  Created by Sergei Mikhan on 3/9/21.
 //
-
+import UIKit
 import RxSwift
 
 open class NavigationBar: UIView, CustomNavigationable, TransparentNavigationBar {
